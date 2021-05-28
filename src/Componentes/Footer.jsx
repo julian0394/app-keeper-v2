@@ -5,7 +5,7 @@ import '../estilosComponentes/footer.css';
 const anio = new Date().getFullYear(); //"Anio" para no usar Ñ.
 
 function Footer() {
-    return <footer className="no-seleccionable"><p>Copyright ⓒ - Juli Pérez - {anio}</p></footer>
+  return <footer className="no-seleccionable"><p>Copyright ⓒ - Juli Pérez - {anio}</p></footer>
 }
 
 export default Footer;
