@@ -12,7 +12,8 @@ app.use(cors());
 const db = mysql.createConnection({
   host: "sql10.freesqldatabase.com",
   user: "sql10415609",
-  password: "42uMSjxtYE",
+  // password: "42uMSjxtYE",
+  password: `${process.env.REACT_APP_PASS_DB}`, 
   database: "sql10415609",
 });
 
