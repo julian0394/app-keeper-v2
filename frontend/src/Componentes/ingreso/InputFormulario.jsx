@@ -16,7 +16,7 @@ const InputFormulario = (props) => {
         type={props.tipo} 
         name={props.nombre}
         value={input} 
-        placeholder=" " 
+        placeholder=" " /* Placeholder vacio sirve para activar la animacion*/
         onChange={alCambiar}
         required 
       />

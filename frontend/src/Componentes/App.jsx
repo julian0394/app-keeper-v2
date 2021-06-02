@@ -15,7 +15,7 @@ function App() {
     agregarNuevasNotas(nuevaNota);
   } 
 
-  //STATE DE LISTA DE NOTAS
+  //STATE DE LISTA DE NOTAS QUE SE MUESTRAN
   const [listaNotas, setListaNotas] = useState([]);
 
   function agregarNuevasNotas(nuevaNota) {
@@ -93,7 +93,7 @@ function App() {
                     contenido={notita.contenido}
                     btnBorrar={borrarNota}
                   />
-                })}               
+                })}
               </ul>
             </div>
         }

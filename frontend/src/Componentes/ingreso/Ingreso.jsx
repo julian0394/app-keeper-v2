@@ -6,8 +6,8 @@ import '../../estilosComponentes/ingreso.css';
 const Ingreso = (props) => {
 
   function alCambiarRuta(evento, nuevaRuta) {
-      evento.preventDefault();
-      props.cambioRuta(nuevaRuta);
+    evento.preventDefault();
+    props.cambioRuta(nuevaRuta);
   }
 
   return (  
@@ -20,11 +20,11 @@ const Ingreso = (props) => {
             instanciarUsuario={props.instanciarUsuario}
           /> 
         : props.ruta === 'registro' && 
-            <Registro 
-              ruta={props.ruta} 
-              cambioRuta={props.cambioRuta} 
-              alCambiarRuta={alCambiarRuta} 
-            />
+          <Registro 
+            ruta={props.ruta} 
+            cambioRuta={props.cambioRuta} 
+            alCambiarRuta={alCambiarRuta} 
+          />
       }
     </div>
   );

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import InputFormulario from './InputFormulario';
+const axios = require('axios').default;
 
 function Registro(props) {
   // RECIBE EL STATE DEL INPUT INDIVIDUAL, LO ALMACENA Y LO MANDA AL SERVER
@@ -21,29 +22,46 @@ function Registro(props) {
   // STATE PARA MOSTRAR EL MENSAJE DE ERROR POR MAL REGISTRO
   const [registroIncorrecto, setRegistroIncorrecto] = useState(0);
     
+  // function manejoClickRegistro(event) {
+  //   event.preventDefault();
+
+  //   if(registroIncorrecto !== 2) {
+  //     fetch('http://localhost:3030/register', { //como fetch hace por defecto un GET, hay que pasarle el otro metodo como 2do param.
+  //       method: 'post',
+  //       headers: {'Content-Type': 'application/json'},
+  //       body: JSON.stringify({
+  //         usuario: registro.usuario,
+  //         email: registro.email,
+  //         password: registro.password
+  //       })
+  //     })
+  //     .then( response => response.json() )
+  //     .then( usuario => {
+  //       if(usuario) {
+  //         props.instanciarUsuario(usuario)
+  //         props.cambioRuta('notas');
+  //       }
+  //       else 
+  //         setRegistroIncorrecto(1);
+  //     })
+  //   }
+  // }
+
   function manejoClickRegistro(event) {
     event.preventDefault();
 
-    if(registroIncorrecto !== 2) {
-      fetch('http://localhost:3030/register', { //como fetch hace por defecto un GET, hay que pasarle el otro metodo como 2do param.
-        method: 'post',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          usuario: registro.usuario,
-          email: registro.email,
-          password: registro.password
-        })
-      })
-      .then( response => response.json() )
-      .then( usuario => {
-        if(usuario) {
-          props.instanciarUsuario(usuario)
-          props.cambioRuta('notas');
-        }
-        else 
-          setRegistroIncorrecto(1);
-      })
-    }
+    axios.post('http://localhost:3030/register', {
+      nombreUsuario: registro.usuario,
+      mailUsuario: registro.email,
+      passUsuario: registro.password
+    })
+    .then(console.log('usuario enviado a backend'))
+    // .then(setRegistro({
+    //   usuario: '',  
+    //   email: '',
+    //   password: '',
+    // }))
+    .catch( err => { console.log('Error frontend', err) });
   }
 
   return (
@@ -68,11 +86,11 @@ function Registro(props) {
           textoLabel="Contraseña" 
           alCambiarInput={alCambiarRegistro}
         />
-        {registroIncorrecto === 1  
+        {/* {registroIncorrecto === 1  
           ? <p className="incorrecto">El usuario o correo ya está existe</p>
         : registroIncorrecto === 2 
           ? <p className="incorrecto">No pueden haber campos vacios</p> : null
-        }
+        } */}
         <button onClick={manejoClickRegistro}>Registrarse</button>
       </form>
       <p className="registroEInicio">Ya tienes una cuenta?
