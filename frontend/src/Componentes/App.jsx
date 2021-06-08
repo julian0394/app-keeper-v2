@@ -42,30 +42,19 @@ function App() {
   }
 
   //STATE DE USUARIO ACTIVO PARA BUSCAR SUS NOTAS
-  const [usuarioActivo, setUsuarioActivo] = useState({
-    nombreUsuario: '',
-    mailUsuario: '',
-    cantNotas: '',
-    fechaRegistro: ''
-  });
+  const [usuarioActivo, setUsuarioActivo] = useState({});
 
-  function instanciarUsuario(usuarioIngresado) {
-    // const {nombreUsuario, mailUsuario, cantNotas, fechaRegistro} = usuarioIngresado;
-    setUsuarioActivo({
-      nombreUsuario: usuarioIngresado.nombreUsuario,
-      mailUsuario: usuarioIngresado.mailUsuario,
-      cantNotas: usuarioIngresado.cantNotas,
-      fechaRegistro: usuarioIngresado.fechaRegistro
-    });
-    console.log('usuario instanciado', usuarioActivo);
-  }
-
-  //METODO QUE SE ACTIVA AL RENDERIZARSE EL COMPONENTE APP
-  // useEffect( ()=> {
-  //     fetch('http://localhost:3000')
-  //     .then( response => response.json() )
-  //     .then( data => console.log(data) )
-  // })
+  /* NO UTILIZADO PORQUE (por ahora) NO USO ESA ESTRUCTURA DE USUARIO*/
+  // function instanciarUsuario(usuarioIngresado) {
+  //   // const {nombreUsuario, mailUsuario, cantNotas, fechaRegistro} = usuarioIngresado;
+  //   setUsuarioActivo({
+  //     nombreUsuario: usuarioIngresado.nombreUsuario,
+  //     mailUsuario: usuarioIngresado.mailUsuario,
+  //     cantNotas: usuarioIngresado.cantNotas,
+  //     fechaRegistro: usuarioIngresado.fechaRegistro
+  //   });
+  //   console.log('usuario instanciado', usuarioActivo);
+  // }
 
   return (
     <>
@@ -76,7 +65,9 @@ function App() {
           <Ingreso 
             ruta={ruta} 
             cambioRuta={cambioRuta}
-            instanciarUsuario={instanciarUsuario} 
+            // instanciarUsuario={instanciarUsuario} 
+            usuarioActivo={usuarioActivo}
+            setUsuarioActivo={setUsuarioActivo}
           />
         }
         {ruta === 'notas' && <AreaNuevaNota setearNota={setearNota} agregarNuevasNotas={agregarNuevasNotas} />}

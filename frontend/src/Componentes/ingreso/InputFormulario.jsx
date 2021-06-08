@@ -13,12 +13,12 @@ const InputFormulario = (props) => {
   return (  
     <div className="input-form">
       <input 
+        required 
         type={props.tipo} 
         name={props.nombre}
         value={input} 
         placeholder=" " /* Placeholder vacio sirve para activar la animacion*/
         onChange={alCambiar}
-        required 
       />
       <label className="no-seleccionable">{props.textoLabel}</label>
     </div>

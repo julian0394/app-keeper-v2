@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import InputFormulario from './InputFormulario';
 import './icono-error.png';
 const axios = require('axios').default;
@@ -10,7 +10,7 @@ function Login(props) {
     password: '',
   });
 
-  function alCambiarLogin(name, value) {
+  function cambioLogin(name, value) {
     setLogin( loginPrevio => {
       return {
         ...loginPrevio,
@@ -19,28 +19,44 @@ function Login(props) {
     })
   }
 
-  // STATE PARA MOSTRAR EL MENSAJE DE ERROR POR MAL LOGIN
-  // const [loginIncorrecto, setLoginIncorrecto] = useState(0);
+        // STATE PARA MOSTRAR EL MENSAJE DE ERROR POR MAL LOGIN
+        // const [loginIncorrecto, setLoginIncorrecto] = useState(0);
 
-  // // PROXIMAMENTE 
-  // function buscarCamposVacios() {
-  //   for (let propiedad in login) {
-  //     console.log(login[propiedad]);
-  //     if(login[propiedad] === '')
-  //       setLoginIncorrecto(2);
-  //   }
-  // }
+        // // PROXIMAMENTE 
+        // function buscarCamposVacios() {
+        //   for (let propiedad in login) {
+        //     console.log(login[propiedad]);
+        //     if(login[propiedad] === '')
+        //       setLoginIncorrecto(2);
+        //   }
+        // }
 
-  function manejoClickLogin(event) {
-    event.preventDefault();
-   
-    axios.post('http://localhost:3030/login', { 
-      nombreUsuario: login.usuario,
-      passUsuario: login.password
-    })
-    .then(console.log('usuario enviado a backend'))
-    .catch( err => { console.log(err) });
+
+  async function manejoClickLogin(event) {
+    try {
+
+      event.preventDefault();
+      console.log('usuario enviado al backend');
+      // props.cambioRuta('notas'); //   -------------------> solo para pasar a las notas..
+      const resultado = await axios.post('http://localhost:3030/login', { 
+        nombreUsuario: login.usuario,
+        passUsuario: login.password
+      });
+      
+      if(resultado.data === '')
+        console.log('El usuario y la contraseña no coinciden');
+      else
+        await props.setUsuarioActivo(resultado.data);
+
+    } catch (error) {
+        console.log('error J en front', error);
+    }
   }
+
+  useEffect( () => {
+    console.log('adentro effect');
+    console.log(props.usuarioActivo);
+  }, [props.usuarioActivo]);
 
   return (
     <>
@@ -50,13 +66,14 @@ function Login(props) {
           tipo="text" 
           nombre="usuario" 
           textoLabel="Usuario" 
-          alCambiarInput={alCambiarLogin} 
+          alCambiarInput={cambioLogin} 
+          noValidate
         />
         <InputFormulario 
           tipo="password" 
           nombre="password" 
           textoLabel="Contraseña" 
-          alCambiarInput={alCambiarLogin}
+          alCambiarInput={cambioLogin}
         />
         {/* {loginIncorrecto === 1  
           ? <p className="incorrecto">El usuario y contraseña no coinciden</p>
@@ -67,9 +84,10 @@ function Login(props) {
       </form>
       <p className="registroEInicio">No tienes una cuenta? 
         <a href="./register" onClick={ (evento) => props.alCambiarRuta(evento, 'registro')}> Registrate!</a>
+        {/* <a href="./register" onClick={ pruebaGet }> Registrate!</a> */}
       </p>            
     </>
   )
 }
-
+ 
 export default Login;

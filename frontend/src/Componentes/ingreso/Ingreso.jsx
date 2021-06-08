@@ -17,13 +17,16 @@ const Ingreso = (props) => {
             ruta={props.ruta} 
             cambioRuta={props.cambioRuta}
             alCambiarRuta={alCambiarRuta} 
-            instanciarUsuario={props.instanciarUsuario}
+            // instanciarUsuario={props.instanciarUsuario}
+            usuarioActivo={props.usuarioActivo}
+            setUsuarioActivo={props.setUsuarioActivo}
           /> 
         : props.ruta === 'registro' && 
           <Registro 
             ruta={props.ruta} 
             cambioRuta={props.cambioRuta} 
             alCambiarRuta={alCambiarRuta} 
+            setUsuarioActivo={props.setUsuarioActivo}
           />
       }
     </div>

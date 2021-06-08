@@ -3,6 +3,7 @@ const mysql = require('mysql');
 const cors = require('cors');
 
 
+
 // Usos de paquetes y middleware
 const app = express();
 app.use(express.json());
@@ -10,11 +11,10 @@ app.use(express.json());
 app.use(cors());
 
 const db = mysql.createConnection({
-  host: "sql10.freesqldatabase.com",
-  user: "sql10415609",
-  // password: "42uMSjxtYE",
-  password: `${process.env.REACT_APP_PASS_DB}`, 
-  database: "sql10415609",
+  host: "localhost",
+  user: "root",
+  password: "password",
+  database: "tp_vazquez",
 });
 
 db.connect( err => {
@@ -24,36 +24,50 @@ db.connect( err => {
   }
   console.log('Conectado a BD correctamente');
 });
+ 
 
 
-// Funciones server / rutas
-app.listen( process.env.PORT || 3030, () => {
+// Funciones server / rutas 
+app.listen( process.env.PORT || 3030, () => { /*  process.env.PORT es para el servidor de heroku una vez subido */
   console.log("Servidor -J- iniciado");
-  // db.query('select * from Usuarios', (err, resultado, campos) => {
-  //   if(err) console.log(err);
-  //   else console.log(resultado);
-  // });
-  // console.log('holi');
 }); 
-/*  process.env.PORT es para el servidor de heroku una vez que este subido a esa web */
+
 
 app.get('/', (req, res) => {
   res.send('DB de Juli!')
 });
 
-app.post('/login', (req, res) => {
+
+app.post('/login', (req, res) => { 
   const {nombreUsuario, passUsuario} = req.body;
   const buscarUsuarioEnDB = `
-    SELECT nombreUsuario, passUsuario FROM Usuarios WHERE nombreUsuario = '${nombreUsuario}';
+    SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
+    FROM Usuarios 
+    WHERE nombreUsuario = '${nombreUsuario}' AND passUsuario = '${passUsuario}';
   `; 
   db.query(buscarUsuarioEnDB, (err, resultado) => {
-    // console.log(resultado);
-    if(resultado[0].passUsuario === passUsuario) 
-      console.log('ACCESO PERMITIDO');
-    else
-      console.log('NONONO');  /* HAY QUE PASARLO AL FRONT-END */
-  });
+    if(err)
+      console.log('error J en server', err);
+    else {
+      if(resultado.length > 0) {
+        console.log('ACCESO PERMITIDO');
+        res.send(resultado[0]);
+      } else {
+        console.log('NONONO');
+        res.send()
+      }  
+    }
+  }); 
 });
+
+/* USE EFFECT LLAMARA ESTE METODO SI EL REQ ANTERIOR FUERA TRUE, ESTE ENVIA TODA LA DATA DEL USUARIO */
+// app.get('/login', (req, res) => {
+//   const buscarUsuarioEnDB = `SELECT * FROM Usuarios;`; 
+//   db.query(buscarUsuarioEnDB, (err, resultado) => {
+//     res.send(resultado);
+//     console.log(resultado); 
+//   });
+// });
 
 app.post('/register', (req, res) => {
     const {nombreUsuario, mailUsuario, passUsuario} = req.body;
@@ -62,13 +76,17 @@ app.post('/register', (req, res) => {
     `;
 
     db.query(insertarEnDB, (err, resultado) => {
-      if (err.errno === 1062) {
-        console.log('ESE USUARIO YA EXISTE'); /* TENGO QUE PASARLO AL FRONT-END */
-      } else if(err)
-        throw err;
+      if(err){
+        if (err.errno === 1062) 
+          console.log('ESE USUARIO YA EXISTE'); /* TENGO QUE PASARLO AL FRONT-END */ 
+        else
+          console.log('ERROR AL INSERTAR', err);
+      }
       else console.log("insertado");
     });
 });
+
+
 
 
 // Funciones generales
@@ -85,4 +103,4 @@ function calcularFecha() {
 
   const fechaHoy = [anio, mes, dia].join('-');
   return fechaHoy;
-} 
+}  
