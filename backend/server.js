@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
   res.send('DB de Juli!')
 });
 
-
+ 
 app.post('/login', (req, res) => { 
   const {nombreUsuario, passUsuario} = req.body;
   const buscarUsuarioEnDB = `
