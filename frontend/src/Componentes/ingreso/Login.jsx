@@ -1,14 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import InputFormulario from './InputFormulario';
 import './icono-error.png';
+
 const axios = require('axios').default;
 
 function Login(props) {
   // RECIBE EL STATE DEL INPUT INDIVIDUAL, LO ALMACENA Y luego LO MANDA AL SERVER
-  const [login, setLogin] = useState({
+  const defaultLogin = {
     usuario: '',
     password: '',
-  });
+  };
+
+  const [login, setLogin] = useState(defaultLogin);
 
   function cambioLogin(name, value) {
     setLogin( loginPrevio => {
@@ -19,44 +22,33 @@ function Login(props) {
     })
   }
 
-        // STATE PARA MOSTRAR EL MENSAJE DE ERROR POR MAL LOGIN
-        // const [loginIncorrecto, setLoginIncorrecto] = useState(0);
-
-        // // PROXIMAMENTE 
-        // function buscarCamposVacios() {
-        //   for (let propiedad in login) {
-        //     console.log(login[propiedad]);
-        //     if(login[propiedad] === '')
-        //       setLoginIncorrecto(2);
-        //   }
-        // }
-
-
   async function manejoClickLogin(event) {
     try {
-
       event.preventDefault();
       console.log('usuario enviado al backend');
-      // props.cambioRuta('notas'); //   -------------------> solo para pasar a las notas..
+      
       const resultado = await axios.post('http://localhost:3030/login', { 
         nombreUsuario: login.usuario,
         passUsuario: login.password
       });
       
-      if(resultado.data === '')
-        console.log('El usuario y la contraseña no coinciden');
-      else
-        await props.setUsuarioActivo(resultado.data);
-
-    } catch (error) {
-        console.log('error J en front', error);
+      if( props.buscarPropiedadVacia(login) ) {
+        if( resultado.data.length === 0 )  /* Si es 0 (array vacio) significa que no trajo nada */
+          await props.setInputIncorrecto(1); /* No hubo coincidencias */
+        else {
+          await props.setUsuarioActivo(resultado.data);
+          await setLogin(defaultLogin); /* Vuelve los campos a cero */
+          await props.setInputIncorrecto(0);
+          await props.cambioRuta('notas');
+        }
+      }
+      else 
+        await props.setInputIncorrecto(2);
+    } 
+    catch (error) {
+      console.log('error J en front', error);
     }
   }
-
-  useEffect( () => {
-    console.log('adentro effect');
-    console.log(props.usuarioActivo);
-  }, [props.usuarioActivo]);
 
   return (
     <>
@@ -75,16 +67,14 @@ function Login(props) {
           textoLabel="Contraseña" 
           alCambiarInput={cambioLogin}
         />
-        {/* {loginIncorrecto === 1  
-          ? <p className="incorrecto">El usuario y contraseña no coinciden</p>
-        : loginIncorrecto === 2 
-          ? <p className="incorrecto">No pueden haber campos vacios</p> : null
-        } */}
+        
+        {props.inputIncorrecto === 1 && <p className="incorrecto">El usuario y contraseña no coinciden</p>}
+        {props.inputIncorrecto === 2 && <p className="incorrecto">No se aceptan campos vacios</p>}
+        
         <button onClick={manejoClickLogin}>Ingresar</button>
       </form>
       <p className="registroEInicio">No tienes una cuenta? 
         <a href="./register" onClick={ (evento) => props.alCambiarRuta(evento, 'registro')}> Registrate!</a>
-        {/* <a href="./register" onClick={ pruebaGet }> Registrate!</a> */}
       </p>            
     </>
   )

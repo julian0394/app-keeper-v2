@@ -44,28 +44,14 @@ function App() {
   //STATE DE USUARIO ACTIVO PARA BUSCAR SUS NOTAS
   const [usuarioActivo, setUsuarioActivo] = useState({});
 
-  /* NO UTILIZADO PORQUE (por ahora) NO USO ESA ESTRUCTURA DE USUARIO*/
-  // function instanciarUsuario(usuarioIngresado) {
-  //   // const {nombreUsuario, mailUsuario, cantNotas, fechaRegistro} = usuarioIngresado;
-  //   setUsuarioActivo({
-  //     nombreUsuario: usuarioIngresado.nombreUsuario,
-  //     mailUsuario: usuarioIngresado.mailUsuario,
-  //     cantNotas: usuarioIngresado.cantNotas,
-  //     fechaRegistro: usuarioIngresado.fechaRegistro
-  //   });
-  //   console.log('usuario instanciado', usuarioActivo);
-  // }
-
   return (
     <>
       <Header ruta={ruta} cambioRuta={cambioRuta} />           
       <div className="div-logeado"> 
-        {/* {(ruta === 'login' || ruta === 'registro') && <Login2 ruta={ruta} cambioRuta={cambioRuta} />} */}
         {(ruta === 'login' || ruta === 'registro') && 
           <Ingreso 
             ruta={ruta} 
             cambioRuta={cambioRuta}
-            // instanciarUsuario={instanciarUsuario} 
             usuarioActivo={usuarioActivo}
             setUsuarioActivo={setUsuarioActivo}
           />

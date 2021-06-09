@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Login from './Login';
 import Registro from './Registro';
 import '../../estilosComponentes/ingreso.css';
 
 const Ingreso = (props) => {
+  // STATE ENVIADO A HIJOS PARA MANEJAR UN INGRESO INVALIDO
+  const [inputIncorrecto, setInputIncorrecto] = useState(0);
 
   function alCambiarRuta(evento, nuevaRuta) {
     evento.preventDefault();
+    setInputIncorrecto(0);
     props.cambioRuta(nuevaRuta);
   }
+
+  const buscarPropiedadVacia = objeto => {
+    for (const propiedad in objeto) {
+      if(objeto[propiedad] === '')
+        return false;
+    }
+    return true;
+  };
 
   return (  
     <div className="contenedor-ingreso">
@@ -17,9 +28,11 @@ const Ingreso = (props) => {
             ruta={props.ruta} 
             cambioRuta={props.cambioRuta}
             alCambiarRuta={alCambiarRuta} 
-            // instanciarUsuario={props.instanciarUsuario}
             usuarioActivo={props.usuarioActivo}
             setUsuarioActivo={props.setUsuarioActivo}
+            inputIncorrecto={inputIncorrecto}
+            setInputIncorrecto={setInputIncorrecto}
+            buscarPropiedadVacia={buscarPropiedadVacia}
           /> 
         : props.ruta === 'registro' && 
           <Registro 
@@ -27,6 +40,9 @@ const Ingreso = (props) => {
             cambioRuta={props.cambioRuta} 
             alCambiarRuta={alCambiarRuta} 
             setUsuarioActivo={props.setUsuarioActivo}
+            inputIncorrecto={inputIncorrecto}
+            setInputIncorrecto={setInputIncorrecto}
+            buscarPropiedadVacia={buscarPropiedadVacia}
           />
       }
     </div>

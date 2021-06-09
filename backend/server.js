@@ -54,20 +54,15 @@ app.post('/login', (req, res) => {
         res.send(resultado[0]);
       } else {
         console.log('NONONO');
-        res.send()
+        res.send(resultado); /* Envia un array vacio */
       }  
     }
   }); 
 });
 
-/* USE EFFECT LLAMARA ESTE METODO SI EL REQ ANTERIOR FUERA TRUE, ESTE ENVIA TODA LA DATA DEL USUARIO */
-// app.get('/login', (req, res) => {
-//   const buscarUsuarioEnDB = `SELECT * FROM Usuarios;`; 
-//   db.query(buscarUsuarioEnDB, (err, resultado) => {
-//     res.send(resultado);
-//     console.log(resultado); 
-//   });
-// });
+/* Averiguar si es nesesario (por buneas practicas) hacer un post request con el usuario
+    y luego un get request para que se traiga la información en un useEffect o algo */
+
 
 app.post('/register', (req, res) => {
     const {nombreUsuario, mailUsuario, passUsuario} = req.body;
@@ -77,12 +72,18 @@ app.post('/register', (req, res) => {
 
     db.query(insertarEnDB, (err, resultado) => {
       if(err){
-        if (err.errno === 1062) 
-          console.log('ESE USUARIO YA EXISTE'); /* TENGO QUE PASARLO AL FRONT-END */ 
-        else
+        if (err.errno === 1062) {
+          console.log('ESE USUARIO YA EXISTE'); /* TENGO QUE PASARLO AL FRONT-END CON res.send()*/ 
+          res.send('existente');
+        } else {
           console.log('ERROR AL INSERTAR', err);
+          // res.send(2);
+        }  
       }
-      else console.log("insertado");
+      else {
+        console.log("insertado");
+        // res.send(0)
+      }
     });
 });
 
