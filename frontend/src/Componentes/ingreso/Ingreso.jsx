@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Login from './Login';
 import Registro from './Registro';
-import '../../estilosComponentes/ingreso.css';
 
 const Ingreso = (props) => {
   // STATE ENVIADO A HIJOS PARA MANEJAR UN INGRESO INVALIDO

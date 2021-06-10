@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import '../estilosComponentes/areaNuevaNota.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const AreaNuevaNota = (props) => {
   //State de los input ingresados ne la nueva nota
@@ -33,7 +34,7 @@ const AreaNuevaNota = (props) => {
           value={input.titulo}
           className="tituloNuevaNota" 
           name="titulo" 
-          placeholder="Titulo"
+          placeholder="Título"
         />
         <textarea 
           onChange={manejoCambioInput}
@@ -43,10 +44,12 @@ const AreaNuevaNota = (props) => {
           rows="3"
         />
         <button 
-          className="btn-agregar"
+          className="btn-agregar no-seleccionable"
           type="submit"
           onClick={manejoClickSubmit}
-        >+</button>
+        >
+          <FontAwesomeIcon className="btn-agregar" icon={faPlus} />
+        </button>
       </form>
     </div>
   );

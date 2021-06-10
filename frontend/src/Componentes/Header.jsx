@@ -1,5 +1,4 @@
 import React from 'react';
-import '../estilosComponentes/header.css';
 import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
 
 const Header = (props) => {

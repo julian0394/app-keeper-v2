@@ -6,6 +6,8 @@ import Nota from './Nota';
 import AreaNuevaNota from './AreaNuevaNota';
 import Ingreso from './ingreso/Ingreso';
 
+import '../Estilos/App.scss'
+
 const App = () => {
   //STATE DE NOTA
   const [nota, setNota] = useState({}); 

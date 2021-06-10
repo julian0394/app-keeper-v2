@@ -1,0 +1,81 @@
+.nota {
+  background: $color-fondoBlanco;
+  border-radius: 7px;
+  box-shadow: 0 2px 5px #ccc;
+  padding: 10px;
+  width: 240px;
+  margin: 16px;
+  float: left;
+
+  h1 {
+    font-size: 1.1em;
+    margin-bottom: 6px;
+  }
+
+  p {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  button {
+    background-color: $color-fondoBlanco;
+    position: relative;
+    float: right;
+    margin-right: 5px;
+    color: $color-amarilloBoton;
+    border: none;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    outline: none;
+  
+    &:hover {
+      color: $color-amarilloHover;
+    }
+    &:active {
+      color: $color-amarilloFocus;
+    }
+
+    .btn-nota {
+      font-size: 1.2rem;
+    }
+  }
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    
+    .texto-tooltip {
+      visibility: hidden;
+      background-color: $color-fondoGrisTooltip;
+      color: white;
+      text-align: center;
+      padding: 7px 0;
+      border-radius: 6px;
+      
+      /*Posicion*/
+      position: absolute;
+      z-index: 1;
+      width: 70px;
+      top: 135%;
+      left: 50%;
+      margin-left: -35px; /*Usar la mitad del width (70 / 2 = 35px), para centrar la ventanita */
+      
+      // opacity: 0;
+      // animation: popup 1s linear 1s backwards;
+
+      // DUDAS DE ANIMACION PARA POP-UP
+    }
+    
+    &:hover .texto-tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
+
+// @keyframes popup {
+//   100% {opacity: 1;}
+// } 
