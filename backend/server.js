@@ -28,7 +28,7 @@ db.connect( err => {
 
 
 // Funciones server / rutas 
-app.listen( process.env.PORT || 3030, () => { /*  process.env.PORT es para el servidor de heroku una vez subido */
+app.listen( process.env.PORT || 3030, () => { /* process.env.PORT es para el servidor de heroku una vez subido */
   console.log("Servidor -J- iniciado");
 }); 
 
@@ -40,12 +40,8 @@ app.get('/', (req, res) => {
  
 app.post('/login', (req, res) => { 
   const {nombreUsuario, passUsuario} = req.body;
-  const buscarUsuarioEnDB = `
-    SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
-    FROM Usuarios 
-    WHERE nombreUsuario = '${nombreUsuario}' AND passUsuario = '${passUsuario}';
-  `; 
-  db.query(buscarUsuarioEnDB, (err, resultado) => {
+  const query = buscarUsuarioEnDB(nombreUsuario, passUsuario); 
+  db.query(query, (err, resultado) => {
     if(err)
       console.log('error J en server', err);
     else {
@@ -60,33 +56,73 @@ app.post('/login', (req, res) => {
   }); 
 });
 
-/* Averiguar si es nesesario (por buneas practicas) hacer un post request con el usuario
-    y luego un get request para que se traiga la información en un useEffect o algo */
-
 
 app.post('/register', (req, res) => {
     const {nombreUsuario, mailUsuario, passUsuario} = req.body;
-    const insertarEnDB = `
-      INSERT INTO Usuarios VALUES (default, '${nombreUsuario}', '${mailUsuario}', '${passUsuario}', '${calcularFecha()}', 0, null);
-    `;
+    const query = insertarEnBD(nombreUsuario, mailUsuario, passUsuario);
 
-    db.query(insertarEnDB, (err, resultado) => {
+    db.query(query, (err, resultado) => {
       if(err){
         if (err.errno === 1062) {
-          console.log('ESE USUARIO YA EXISTE'); /* TENGO QUE PASARLO AL FRONT-END CON res.send()*/ 
+          console.log('ESE USUARIO YA EXISTE');  
           res.send('existente');
         } else {
           console.log('ERROR AL INSERTAR', err);
-          // res.send(2);
+          res.send('error'); 
         }  
       }
       else {
-        console.log("insertado");
-        // res.send(0)
+        console.log("INSERTADO");
+        const idInsertada = resultado.insertId;
+        db.query( buscarEnDBConID(idInsertada), (err2, resultado2) => {
+          res.send(resultado2[0]);
+        });
       }
     });
 });
 
+
+app.get('/notas/mostrar', (req, res) => {
+
+});
+
+app.put('/notas/editar', (req, res) => {
+
+});
+
+app.delete('/notas/borrar', (req, res) => {
+
+});
+
+
+/* Averiguar si es nesesario (por buneas practicas) hacer un post request con el usuario
+    y luego un get request para que se traiga la información en un useEffect o algo */
+
+
+
+// Queries
+const buscarUsuarioEnDB = (nombreUsuario, passUsuario) => {
+  return `
+    SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
+    FROM Usuarios 
+    WHERE nombreUsuario = '${nombreUsuario}' AND passUsuario = '${passUsuario}';
+  `;  
+}
+
+const buscarEnDBConID = (id) => {
+  return `
+    SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
+    FROM Usuarios 
+    WHERE ID_usuario = ${id};
+  `;  
+}
+
+const insertarEnBD = (nombreUsuario, mailUsuario, passUsuario) => {
+  return`
+    INSERT INTO Usuarios 
+    VALUES (null, '${nombreUsuario}', '${mailUsuario}', '${passUsuario}', '${calcularFecha()}', 0, null);
+  `;
+}
 
 
 

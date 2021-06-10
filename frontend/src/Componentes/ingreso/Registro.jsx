@@ -25,12 +25,12 @@ function Registro(props) {
   async function manejoClickRegistro(event) {
     try {
       event.preventDefault();
-      console.log('usuario enviado al backend');
       
       if( props.buscarPropiedadVacia(registro) ) {
+        console.log('usuario enviado al backend');
         const resultado = await axios.post('http://localhost:3030/register', {
-          nombreUsuario: registro.usuario,
-          mailUsuario: registro.email,
+          nombreUsuario: registro.usuario.trim(),
+          mailUsuario: registro.email.trim(),
           passUsuario: registro.password,
         });
 
@@ -43,9 +43,8 @@ function Registro(props) {
           console.log(resultado.data);
           await props.cambioRuta('notas');
         }
-      } else {
-        await props.setInputIncorrecto(2);
-      }
+      } else 
+        await props.setInputIncorrecto(2); /* Hubo campos vacios */
     }
     catch(error) {
       console.log('error J en front', error);
