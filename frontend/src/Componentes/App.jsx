@@ -6,11 +6,11 @@ import Nota from './Nota';
 import AreaNuevaNota from './AreaNuevaNota';
 import Ingreso from './ingreso/Ingreso';
 
-function App() {
+const App = () => {
   //STATE DE NOTA
   const [nota, setNota] = useState({}); 
   
-  function setearNota(nuevaNota) {
+  const setearNota = nuevaNota => {
     setNota(nuevaNota);
     agregarNuevasNotas(nuevaNota);
   } 
@@ -18,13 +18,13 @@ function App() {
   //STATE DE LISTA DE NOTAS QUE SE MUESTRAN
   const [listaNotas, setListaNotas] = useState([]);
 
-  function agregarNuevasNotas(nuevaNota) {
+  const agregarNuevasNotas = nuevaNota => {
     setListaNotas( (valorPrevio) => {
       return [...valorPrevio, nuevaNota]
     });
   }
 
-  function borrarNota(indiceABorrar) {
+  const borrarNota = indiceABorrar => {
     setListaNotas((valorPrevio) => {
       return valorPrevio.filter(
         (elemento, index) => {
@@ -37,7 +37,7 @@ function App() {
   //STATE DE RUTA PARA INICIO DE SESIÓN, REGISTRO Y USO
   const [ruta, setRuta] = useState('login'); // Se manejaran 3 estados: login, signup y notas.
 
-  function cambioRuta(nuevaRuta) {  
+  const cambioRuta = nuevaRuta => {  
     setRuta(nuevaRuta)
   }
 

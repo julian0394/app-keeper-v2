@@ -2,7 +2,7 @@ import React from 'react';
 import '../estilosComponentes/nota.css';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-function Nota(props) {
+const Nota = (props) => {
   return (
     <div className="nota">
       <h1>{props.titulo}</h1>

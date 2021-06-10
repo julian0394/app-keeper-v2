@@ -4,7 +4,7 @@ import './icono-error.png';
 
 const axios = require('axios').default;
 
-function Login(props) {
+const Login = (props) => {
   // RECIBE EL STATE DEL INPUT INDIVIDUAL, LO ALMACENA Y luego LO MANDA AL SERVER
   const defaultLogin = {
     usuario: '',
@@ -13,7 +13,7 @@ function Login(props) {
 
   const [login, setLogin] = useState(defaultLogin);
 
-  function cambioLogin(name, value) {
+  const cambioLogin = (name, value) => {
     setLogin( loginPrevio => {
       return {
         ...loginPrevio,
@@ -22,7 +22,7 @@ function Login(props) {
     })
   }
 
-  async function manejoClickLogin(event) {
+  const manejoClickLogin = async (event) => {
     try {
       event.preventDefault();
       console.log('usuario enviado al backend');

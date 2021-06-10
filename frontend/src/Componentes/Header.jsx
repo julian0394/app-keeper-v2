@@ -2,9 +2,9 @@ import React from 'react';
 import '../estilosComponentes/header.css';
 import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
 
-function Header(props) {
+const Header = (props) => {
     
-  function manejoCierreSesion(evento) {
+  const manejoCierreSesion = evento => {
     evento.preventDefault();
     props.cambioRuta('login');
   }

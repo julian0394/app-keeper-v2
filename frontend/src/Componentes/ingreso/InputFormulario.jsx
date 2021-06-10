@@ -4,7 +4,7 @@ const InputFormulario = (props) => {
   // ALMACENA EL STATE DEL INPUT INDIVIDUAL Y LO MANDA A SU PADRE PARA ACTUALIZAR SU STATE
   const [input, setInput] = useState('');
 
-  function alCambiar(evento) {
+  const alCambiar = evento => {
     const {name, value} = evento.target;
     setInput(value);    // Para que se lea su valor
     props.alCambiarInput(name, value);

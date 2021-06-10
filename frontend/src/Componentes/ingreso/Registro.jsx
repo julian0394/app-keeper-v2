@@ -3,7 +3,7 @@ import InputFormulario from './InputFormulario';
 
 const axios = require('axios').default;
 
-function Registro(props) {
+const Registro = (props) => {
   const registroDefault = {
     usuario: '',
     email: '',
@@ -13,7 +13,7 @@ function Registro(props) {
   // RECIBE EL STATE DEL INPUT INDIVIDUAL, LO ALMACENA Y LO MANDA AL SERVER
   const [registro, setRegistro] = useState(registroDefault);
 
-  function cambioRegistro(name, value) {
+  const cambioRegistro = (name, value) => {
     setRegistro( registroPrevio => {
       return {
         ...registroPrevio,
@@ -22,7 +22,7 @@ function Registro(props) {
     });
   }
     
-  async function manejoClickRegistro(event) {
+  const manejoClickRegistro = async (event) => {
     try {
       event.preventDefault();
       

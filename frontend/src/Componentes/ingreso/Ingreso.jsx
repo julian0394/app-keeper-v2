@@ -7,7 +7,7 @@ const Ingreso = (props) => {
   // STATE ENVIADO A HIJOS PARA MANEJAR UN INGRESO INVALIDO
   const [inputIncorrecto, setInputIncorrecto] = useState(0);
 
-  function alCambiarRuta(evento, nuevaRuta) {
+  const alCambiarRuta = (evento, nuevaRuta) => {
     evento.preventDefault();
     setInputIncorrecto(0);
     props.cambioRuta(nuevaRuta);

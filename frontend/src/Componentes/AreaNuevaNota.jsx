@@ -8,7 +8,7 @@ const AreaNuevaNota = (props) => {
     contenido: '',
   });
 
-  function manejoCambioInput(evento) {
+  const manejoCambioInput = evento => {
     const {name, value} = evento.target;
     
     setInput( valorPrevio => {
@@ -19,7 +19,7 @@ const AreaNuevaNota = (props) => {
     });
   }
 
-  function manejoClickSubmit(event) {
+  const manejoClickSubmit = event => {
     event.preventDefault();
     props.setearNota(input)
     setInput({titulo: '', contenido: ''})
