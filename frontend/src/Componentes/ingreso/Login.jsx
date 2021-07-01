@@ -5,12 +5,13 @@ import './icono-error.png';
 const axios = require('axios').default;
 
 const Login = (props) => {
-  // RECIBE EL STATE DEL INPUT INDIVIDUAL, LO ALMACENA Y luego LO MANDA AL SERVER
+  /* Objeto de login vacio para referenciar facil cuando se quiera poner en blanco */
   const defaultLogin = {
     usuario: '',
     password: '',
   };
-
+  
+  // RECIBE EL STATE DEL INPUT INDIVIDUAL, LO ALMACENA Y luego LO MANDA AL SERVER
   const [login, setLogin] = useState(defaultLogin);
 
   const cambioLogin = (name, value) => {
@@ -33,17 +34,17 @@ const Login = (props) => {
       });
       
       if( props.buscarPropiedadVacia(login) ) {
-        if( resultado.data.length === 0 )  /* Si es 0 (array vacio) significa que no trajo nada */
-          await props.setInputIncorrecto(1); /* No hubo coincidencias */
+        if( resultado.data.length === 0 )  /* Si el array está vacio significa que no trajo/encontró nada */
+          await props.setInputIncorrecto(1); /* Mje que no hubo coincidencias */
         else {
-          await props.setUsuarioActivo(resultado.data);
+          await props.setUsuarioActivo(resultado.data); 
           await setLogin(defaultLogin); /* Vuelve los campos a cero */
           await props.setInputIncorrecto(0);
-          await props.cambioRuta('notas');
+          return await props.cambioRuta('notas');
         }
       }
       else 
-        await props.setInputIncorrecto(2); /* Hubo campos vacios */
+        await props.setInputIncorrecto(2); /* Mje que hubo campos vacios */
     } 
     catch (error) {
       console.log('error J en front', error);
@@ -68,7 +69,7 @@ const Login = (props) => {
           alCambiarInput={cambioLogin}
         />
         
-        {props.inputIncorrecto === 1 && <p className="incorrecto">El usuario y contraseña no coinciden</p>}
+        {props.inputIncorrecto === 1 && <p className="incorrecto">El usuario o contraseña no coinciden</p>}
         {props.inputIncorrecto === 2 && <p className="incorrecto">No se aceptan campos vacios</p>}
         
         <button onClick={manejoClickLogin}>Ingresar</button>

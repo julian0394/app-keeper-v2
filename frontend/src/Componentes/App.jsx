@@ -5,6 +5,7 @@ import Footer from './Footer';
 import Nota from './Nota';
 import AreaNuevaNota from './AreaNuevaNota';
 import Ingreso from './ingreso/Ingreso';
+import AreaNotas from './AreaNotas';
 
 import '../Estilos/App.scss'
 
@@ -14,10 +15,10 @@ const App = () => {
   
   const setearNota = nuevaNota => {
     setNota(nuevaNota);
-    agregarNuevasNotas(nuevaNota);
+    // agregarNuevasNotas(nuevaNota);
   } 
 
-  //STATE DE LISTA DE NOTAS QUE SE MUESTRAN
+  // //STATE DE LISTA DE NOTAS QUE SE MUESTRAN
   const [listaNotas, setListaNotas] = useState([]);
 
   const agregarNuevasNotas = nuevaNota => {
@@ -49,33 +50,21 @@ const App = () => {
   return (
     <>
       <Header ruta={ruta} cambioRuta={cambioRuta} />           
-      <div className="div-logeado"> 
-        {(ruta === 'login' || ruta === 'registro') && 
-          <Ingreso 
-            ruta={ruta} 
-            cambioRuta={cambioRuta}
-            usuarioActivo={usuarioActivo}
-            setUsuarioActivo={setUsuarioActivo}
-          />
-        }
-        {ruta === 'notas' && <AreaNuevaNota setearNota={setearNota} agregarNuevasNotas={agregarNuevasNotas} />}
-        {ruta === 'notas' && listaNotas.length === 0 
-          ? <div className="div-sin-notas">No hay notas que mostrar</div> 
-          : ruta === 'notas' &&
-            <div className="lista-notas">
-              <ul>
-                {listaNotas.map( (notita, indice) => {
-                  return <Nota 
-                    key={indice} 
-                    id={indice} 
-                    titulo={notita.titulo} 
-                    contenido={notita.contenido}
-                    btnBorrar={borrarNota}
-                  />
-                })}
-              </ul>
-            </div>
-        }
+      <div className="div-body"> 
+        {(ruta === 'login' || ruta === 'registro') 
+          ?
+            <Ingreso 
+              ruta={ruta} 
+              cambioRuta={cambioRuta}
+              usuarioActivo={usuarioActivo}
+              setUsuarioActivo={setUsuarioActivo}
+            />
+          :
+            <div className="contenedor-notas">
+              <AreaNuevaNota /*setearNota={setearNota} agregarNuevasNotas={agregarNuevasNotas}*/ usuarioActivo={usuarioActivo} />
+              <AreaNotas listaNotas={listaNotas} setListaNotas={setListaNotas} borrarNota={borrarNota} setNota={setNota} usuarioActivo={usuarioActivo} />
+            </div> 
+        } 
       </div>   
       <Footer />
     </>

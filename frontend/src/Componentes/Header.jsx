@@ -11,7 +11,7 @@ const Header = (props) => {
   return (
     <header>
       <h1 className="no-seleccionable"><EmojiObjectsIcon /> Keeper</h1>
-      {props.ruta === 'notas' && <a onClick={manejoCierreSesion} href="">Cerrar sesión</a>} 
+      {props.ruta === 'notas' && <p onClick={manejoCierreSesion}>Cerrar sesión</p>} 
     </header>
   );
 }

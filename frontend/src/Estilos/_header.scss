@@ -14,8 +14,10 @@ header {
     font-weight: 200;
   }
 
-  a {
+  p {
     color: #000;
     font-size: 1.1rem;
+    text-decoration: underline;
+    cursor: pointer;
   }
 }

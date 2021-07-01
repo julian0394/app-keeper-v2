@@ -37,7 +37,8 @@ app.get('/', (req, res) => {
   res.send('DB de Juli!')
 });
 
- 
+
+/* Login de usuario */
 app.post('/login', (req, res) => { 
   const {nombreUsuario, passUsuario} = req.body;
   const query = buscarUsuarioEnDB(nombreUsuario, passUsuario); 
@@ -57,9 +58,10 @@ app.post('/login', (req, res) => {
 });
 
 
+/* Registro de nuevo usuario */
 app.post('/register', (req, res) => {
     const {nombreUsuario, mailUsuario, passUsuario} = req.body;
-    const query = insertarEnBD(nombreUsuario, mailUsuario, passUsuario);
+    const query = insertarUsuarioEnBD(nombreUsuario, mailUsuario, passUsuario);
 
     db.query(query, (err, resultado) => {
       if(err){
@@ -81,22 +83,53 @@ app.post('/register', (req, res) => {
     });
 });
 
-
-app.get('/notas/mostrar', (req, res) => {
-
+  
+/* Agregar nueva nota */
+app.post('/notas/nueva', (req, res) => {
+  const {tituloNota, cuerpoNota, ID_usuario} = req.body;
+  const query = insertarNotaEnBD(tituloNota, cuerpoNota, ID_usuario); 
+  db.query(query, (err, resultado) => {
+    if(err)
+      if (err.errno === 1406) {
+        console.log('ERROR, TITULO MUY LARGO', err);
+        res.send('error'); 
+      } else {
+        console.log('ERROR AL AGREGAR', err.errno);
+      }
+    else {
+      console.log('NOTA AGREGADA');
+      res.send(resultado);     
+    }
+  }); 
 });
 
+
+/* Muestra las notas de un usuario logeado */
+app.post('/notas/mostrar', (req, res) => {
+  const {ID_usuario} = req.body;
+  // console.log("cuerpo del req: ", req.body);
+  // console.log("id: ", ID_usuario);
+  const query = buscarNotasEnDB(ID_usuario); 
+  db.query(query, (err, resultado) => {
+    if(err) {
+      console.log('error J en server');
+      res.send(err);
+    } else 
+      res.send(resultado);
+  }); 
+});
+
+
+/* Edicion de nota existente */
 app.put('/notas/editar', (req, res) => {
 
 });
 
+
+/* Borrar nota existente */
 app.delete('/notas/borrar', (req, res) => {
-
+ 
 });
-
-
-/* Averiguar si es nesesario (por buneas practicas) hacer un post request con el usuario
-    y luego un get request para que se traiga la información en un useEffect o algo */
 
 
 
@@ -117,12 +150,27 @@ const buscarEnDBConID = (id) => {
   `;  
 }
 
-const insertarEnBD = (nombreUsuario, mailUsuario, passUsuario) => {
+const insertarUsuarioEnBD = (nombreUsuario, mailUsuario, passUsuario) => {
   return`
     INSERT INTO Usuarios 
     VALUES (null, '${nombreUsuario}', '${mailUsuario}', '${passUsuario}', '${calcularFecha()}', 0, null);
   `;
 }
+
+const insertarNotaEnBD = (tituloNota, cuerpoNota, ID_usuario) => {
+  return`
+    INSERT INTO Notas 
+    VALUES (null, '${tituloNota}', '${cuerpoNota}', '${ID_usuario}');
+  `;
+}
+
+const buscarNotasEnDB = (ID_usuario) => {
+  return`
+    SELECT * FROM Notas WHERE ID_usuario = ${ID_usuario};
+  `;
+}
+
+
 
 
 

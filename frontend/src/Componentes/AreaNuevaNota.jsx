@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
+const axios = require('axios').default;
+
 const AreaNuevaNota = (props) => {
   //State de los input ingresados ne la nueva nota
   const [input, setInput] = useState({
@@ -20,14 +22,35 @@ const AreaNuevaNota = (props) => {
     });
   }
 
-  const manejoClickSubmit = event => {
-    event.preventDefault();
-    props.setearNota(input)
-    setInput({titulo: '', contenido: ''})
+  const manejoClickSubmit = async (event) => {
+    try {
+      event.preventDefault();
+      console.log('nota enviada al backend');
+      
+      const resultado = await axios.post('http://localhost:3030/notas/nueva', { 
+        tituloNota: input.titulo,
+        cuerpoNota: input.contenido,
+        ID_usuario: props.usuarioActivo.ID_usuario
+      });
+
+      console.log('RESULTADO DESDE EL FRONT', resultado); /* falta validar inputs vacias (mas adelante con dependencias) */
+    }
+    catch (error) {
+      console.log('error J en front', error);
+    }
+    
+        /* FUNCIONALIDAD NORMAL DE LISTADO DE NOTAS!
+            // event.preventDefault();
+            // props.setearNota(input);
+            // setInput( {
+            //   titulo: '', 
+            //   contenido: ''} 
+            // );
+        */
   }
     
   return ( 
-    <div>
+    <div className="contenedor-nueva-nota">
       <form className="crear-nota">
         <input 
           onChange={manejoCambioInput}
