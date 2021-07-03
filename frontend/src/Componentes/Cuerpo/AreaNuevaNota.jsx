@@ -5,11 +5,14 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 const axios = require('axios').default;
 
 const AreaNuevaNota = (props) => {
-  //State de los input ingresados ne la nueva nota
-  const [input, setInput] = useState({
+  
+  const inputDefault = {
     titulo: '',
     contenido: '',
-  });
+  }
+  
+  //State de los input ingresados ne la nueva nota
+  const [input, setInput] = useState(inputDefault);
 
   const manejoCambioInput = evento => {
     const {name, value} = evento.target;
@@ -27,13 +30,22 @@ const AreaNuevaNota = (props) => {
       event.preventDefault();
       console.log('nota enviada al backend');
       
-      const resultado = await axios.post('http://localhost:3030/notas/nueva', { 
+      const nuevaNota = { 
         tituloNota: input.titulo,
         cuerpoNota: input.contenido,
         ID_usuario: props.usuarioActivo.ID_usuario
+      }
+      await axios.post('http://localhost:3030/notas/nueva', nuevaNota);
+
+      await props.setListaNotas( valorPrevio => {
+        return [...valorPrevio, nuevaNota] 
       });
 
-      console.log('RESULTADO DESDE EL FRONT', resultado); /* falta validar inputs vacias (mas adelante con dependencias) */
+      setInput(inputDefault);
+
+      // console.log('state lista');
+
+      // console.log('RESULTADO DESDE EL FRONT', resultado); /* falta validar inputs vacias (mas adelante con dependencias) */
     }
     catch (error) {
       console.log('error J en front', error);

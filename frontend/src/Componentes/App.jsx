@@ -2,30 +2,25 @@ import React, {useState} from 'react';
 
 import Header from './Header';
 import Footer from './Footer';
-import Nota from './Nota';
-import AreaNuevaNota from './AreaNuevaNota';
+// import AreaNuevaNota from './AreaNuevaNota';
+// import AreaNotas from './AreaNotas';
 import Ingreso from './ingreso/Ingreso';
-import AreaNotas from './AreaNotas';
+import CuerpoNotas from './Cuerpo/CuerpoNotas';
 
 import '../Estilos/App.scss'
 
 const App = () => {
   //STATE DE NOTA
-  const [nota, setNota] = useState({}); 
+  // const [nota, setNota] = useState({}); 
   
-  const setearNota = nuevaNota => {
-    setNota(nuevaNota);
-    // agregarNuevasNotas(nuevaNota);
-  } 
+  // const setearNota = nuevaNota => {
+  //   setNota(nuevaNota);
+  //   // agregarNuevasNotas(nuevaNota);
+  // } 
 
   // //STATE DE LISTA DE NOTAS QUE SE MUESTRAN
   const [listaNotas, setListaNotas] = useState([]);
 
-  const agregarNuevasNotas = nuevaNota => {
-    setListaNotas( (valorPrevio) => {
-      return [...valorPrevio, nuevaNota]
-    });
-  }
 
   const borrarNota = indiceABorrar => {
     setListaNotas((valorPrevio) => {
@@ -49,7 +44,12 @@ const App = () => {
 
   return (
     <>
-      <Header ruta={ruta} cambioRuta={cambioRuta} />           
+      <Header 
+        ruta={ruta} 
+        cambioRuta={cambioRuta} 
+        setUsuarioActivo={setUsuarioActivo} 
+        setListaNotas={setListaNotas} 
+      />           
       <div className="div-body"> 
         {(ruta === 'login' || ruta === 'registro') 
           ?
@@ -60,10 +60,18 @@ const App = () => {
               setUsuarioActivo={setUsuarioActivo}
             />
           :
-            <div className="contenedor-notas">
-              <AreaNuevaNota /*setearNota={setearNota} agregarNuevasNotas={agregarNuevasNotas}*/ usuarioActivo={usuarioActivo} />
-              <AreaNotas listaNotas={listaNotas} setListaNotas={setListaNotas} borrarNota={borrarNota} setNota={setNota} usuarioActivo={usuarioActivo} />
-            </div> 
+            <CuerpoNotas 
+              usuarioActivo={usuarioActivo}
+              listaNotas={listaNotas} 
+              setListaNotas={setListaNotas} 
+              // borrarNota={borrarNota} 
+              // setNota={setNota} 
+              usuarioActivo={usuarioActivo}
+            />
+            // <div className="contenedor-notas">
+            //   <AreaNuevaNota /*setearNota={setearNota} agregarNuevasNotas={agregarNuevasNotas}*/ usuarioActivo={usuarioActivo} />
+            //   <AreaNotas listaNotas={listaNotas} setListaNotas={setListaNotas} borrarNota={borrarNota} setNota={setNota} usuarioActivo={usuarioActivo} />
+            // </div> 
         } 
       </div>   
       <Footer />

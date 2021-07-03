@@ -5,6 +5,8 @@ const Header = (props) => {
     
   const manejoCierreSesion = evento => {
     evento.preventDefault();
+    props.setUsuarioActivo({});
+    props.setListaNotas([]);
     props.cambioRuta('login');
   }
 
