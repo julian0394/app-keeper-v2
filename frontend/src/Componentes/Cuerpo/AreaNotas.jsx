@@ -4,25 +4,17 @@ import Nota from '../Nota';
 const axios = require('axios').default;
 
 const AreaNotas = (props) => {
-
-      // const borrarNota = indiceABorrar => {
-      //   setListaNotas((valorPrevio) => {
-      //     return valorPrevio.filter(
-      //       (elemento, index) => {
-      //         return index !==  indiceABorrar; 
-      //       }
-      //     );
-      //   });
-      // }
     
   const buscarNotasEnDB = async () => {
     const idUsuario = props.usuarioActivo.ID_usuario;
     try {  
-      console.log('Buscando notas... con el id ' + idUsuario);
+      console.log('Buscando notas...');
       const resultado = await axios.post('http://localhost:3030/notas/mostrar', { 
         ID_usuario: idUsuario
       });
+      console.log('seteando notas');
       await props.setListaNotas(resultado.data)
+      console.log('todo OK');
     } 
     catch (error) {
       console.log('error J en front', error);
@@ -48,7 +40,8 @@ const AreaNotas = (props) => {
                 id={notita.ID_nota} 
                 titulo={notita.tituloNota} 
                 contenido={notita.cuerpoNota}
-                btnBorrar={props.borrarNota}
+                setListaNotas={props.setListaNotas} 
+                buscarNotasEnDB={buscarNotasEnDB}
               />
             })}
           </ul>

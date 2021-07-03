@@ -2,13 +2,35 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
+const axios = require('axios').default;
+
 const Nota = (props) => {
+  
+  const manejoBotonBorrar = () => {
+    // try {
+      // console.log('borrando..');
+      // const idBorrar = props.id;
+      // await axios.post('http://localhost:3030/notas/borrar', {ID_nota: idBorrar});
+      // console.log('borrado!');
+      
+      // await props.buscarNotasEnDB();
+    // } catch {
+    //   console.log('Error J en front')
+    // }
+    console.log('borrando..');
+    const idBorrar = props.id.then()
+    axios.post('http://localhost:3030/notas/borrar', {ID_nota: idBorrar})
+    .then(console.log('borrado!'))
+    .then(props.buscarNotasEnDB())
+    .catch(console.log('Error J en front'))
+  }
+
   return (
     <div className="nota">
       <h1>{props.titulo}</h1>
       <p>{props.contenido}</p>
       <div className="tooltip" >
-        <button onClick={ () => {props.btnBorrar(props.id)} } >
+        <button onClick={manejoBotonBorrar} >
           <FontAwesomeIcon className="btn-nota btn-borrar" icon={faTrash} />
         <p className="texto-tooltip">Borrar</p>
         </button>
@@ -16,7 +38,7 @@ const Nota = (props) => {
         
         
         <div className="tooltip">
-          <button onClick={ () => {props.btnBorrar(props.id)} } >
+          <button /*onClick={ () => {props.btnBorrar(props.id)} }*/ >
             <FontAwesomeIcon className="btn-nota btn-editar" icon={faEdit} />
           <p className="texto-tooltip">Editar</p>
           </button>

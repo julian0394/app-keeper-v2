@@ -107,8 +107,6 @@ app.post('/notas/nueva', (req, res) => {
 /* Muestra las notas de un usuario logeado */
 app.post('/notas/mostrar', (req, res) => {
   const {ID_usuario} = req.body;
-  // console.log("cuerpo del req: ", req.body);
-  // console.log("id: ", ID_usuario);
   const query = buscarNotasEnDB(ID_usuario); 
   db.query(query, (err, resultado) => {
     if(err) {
@@ -116,6 +114,7 @@ app.post('/notas/mostrar', (req, res) => {
       res.send(err);
     } else 
       res.send(resultado);
+
   }); 
 });
 
@@ -127,8 +126,19 @@ app.put('/notas/editar', (req, res) => {
 
 
 /* Borrar nota existente */
-app.delete('/notas/borrar', (req, res) => {
- 
+app.post('/notas/borrar', (req, res) => {
+ const {ID_nota} = req.body;
+ const query = borrarNotaEnBD(ID_nota);
+ console.log('intentando borrar..');
+ db.query(query, (err, resultado) => {
+  if(err) {
+    console.log('error J en server', err);
+    res.send(err);
+  } else {
+    res.send(resultado);
+    console.log('borrado');
+  }
+ });
 });
 
 
@@ -170,7 +180,11 @@ const buscarNotasEnDB = (ID_usuario) => {
   `;
 }
 
-
+const borrarNotaEnBD = (ID_nota) => {
+  return`
+    DELETE FROM notas WHERE ID_nota = ${ID_nota};
+  `;
+}
 
 
 
