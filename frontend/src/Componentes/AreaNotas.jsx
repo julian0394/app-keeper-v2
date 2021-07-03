@@ -24,30 +24,21 @@ const AreaNotas = (props) => {
       const resultado = await axios.post('http://localhost:3030/notas/mostrar', { 
         ID_usuario: idUsuario
       });
-      await setearNotas(resultado.data);
+      await setearNotas(resultado.data)
+      console.log('lista state', props.listaNotas);
     } 
     catch (error) {
       console.log('error J en front', error);
     }
   }
 
-  const setearNotas = (arrayNotasBD) => {
-    arrayNotasBD.map( (notaBD) => {
-      const notita = {
-        tituloNota: notaBD.tituloNota,
-        cuerpoNota: notaBD.cuerpoNota
-      }
-      console.log(notita);
-      props.setListaNotas( listaPrevia => {
-        return [...listaPrevia, notita]
-      })
-    });
-    console.log(props.listaNotas);
+  const setearNotas = async (arrayNotasBD) => {
+    props.setListaNotas(arrayNotasBD);
   };
 
   // const renderizarNotas = (notasState) => {
   //   notasDB.map( (notita) => {
-  //     // props.setNota
+      
   //   });
   // }
 
@@ -56,6 +47,7 @@ const AreaNotas = (props) => {
   useEffect( () => {
     console.log('use effect busca el id ' + props.usuarioActivo.ID_usuario);  
     buscarNotasEnDB();
+    // renderizarNotas();
   }, [] );
 
   
@@ -65,15 +57,15 @@ const AreaNotas = (props) => {
       ? <div className="div-sin-notas">No hay notas que mostrar</div> 
       : <div className="lista-notas">
           <ul>
-            {/* {props.listaNotas.map( (notita, indice) => {
+            {props.listaNotas.map( (notita, indice) => {
               return <Nota 
-                key={indice} 
-                id={indice} 
-                titulo={notita.titulo} 
-                contenido={notita.contenido}
+                key={notita.ID_nota} 
+                id={notita.ID_nota} 
+                titulo={notita.tituloNota} 
+                contenido={notita.cuerpoNota}
                 btnBorrar={props.borrarNota}
               />
-            })} */}
+            })}
           </ul>
         </div> 
       }
