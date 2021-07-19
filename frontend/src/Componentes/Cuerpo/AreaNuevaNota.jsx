@@ -37,15 +37,10 @@ const AreaNuevaNota = (props) => {
       }
       await axios.post('http://localhost:3030/notas/nueva', nuevaNota);
 
-      await props.setListaNotas( valorPrevio => {
-        return [...valorPrevio, nuevaNota] 
-      });
+      await props.buscarNotasEnDB();
 
       setInput(inputDefault);
-
-      // console.log('state lista');
-
-      // console.log('RESULTADO DESDE EL FRONT', resultado); /* falta validar inputs vacias (mas adelante con dependencias) */
+      /* falta validar inputs vacias (mas adelante con dependencias) */
     }
     catch (error) {
       console.log('error J en front', error);

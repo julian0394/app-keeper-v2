@@ -6,23 +6,18 @@ const axios = require('axios').default;
 
 const Nota = (props) => {
   
-  const manejoBotonBorrar = () => {
-    // try {
-      // console.log('borrando..');
-      // const idBorrar = props.id;
-      // await axios.post('http://localhost:3030/notas/borrar', {ID_nota: idBorrar});
-      // console.log('borrado!');
+  const manejoBotonBorrar = async () => {
+    try {
+      console.log('borrando..');
+      const idBorrar = await props.id;
+      console.log('id a borrar: ', idBorrar);
+      await axios.post('http://localhost:3030/notas/borrar', {ID_nota: idBorrar});
+      console.log('borrado!');
       
-      // await props.buscarNotasEnDB();
-    // } catch {
-    //   console.log('Error J en front')
-    // }
-    console.log('borrando..');
-    const idBorrar = props.id.then()
-    axios.post('http://localhost:3030/notas/borrar', {ID_nota: idBorrar})
-    .then(console.log('borrado!'))
-    .then(props.buscarNotasEnDB())
-    .catch(console.log('Error J en front'))
+      await props.buscarNotasEnDB();
+    } catch {
+      console.log('Error J en front')
+    }
   }
 
   return (

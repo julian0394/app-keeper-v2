@@ -40,7 +40,7 @@ const Login = (props) => {
           await props.setUsuarioActivo(resultado.data); 
           await setLogin(defaultLogin); /* Vuelve los campos a cero */
           await props.setInputIncorrecto(0);
-          return await props.cambioRuta('notas');
+          await props.cambioRuta('notas');
         }
       }
       else 
