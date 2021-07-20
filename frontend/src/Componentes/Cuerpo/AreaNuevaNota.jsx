@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 const axios = require('axios').default;
 
@@ -25,10 +25,23 @@ const AreaNuevaNota = (props) => {
     });
   }
 
+  try {
+    if (props.modoEdicion) {
+      const viejaNota = {
+        titulo: props.notaParaEditar.tituloNota,
+        contenido: props.notaParaEditar.cuerpoNota
+      }
+      setInput(viejaNota);
+    }
+  }
+  catch {
+    console.log('"error" nuevo');
+    console.log(props.listaNotas);
+  }
+
   const manejoClickSubmit = async (event) => {
     try {
       event.preventDefault();
-      console.log('nota enviada al backend');
       
       const nuevaNota = { 
         tituloNota: input.titulo,
@@ -43,17 +56,8 @@ const AreaNuevaNota = (props) => {
       /* falta validar inputs vacias (mas adelante con dependencias) */
     }
     catch (error) {
-      console.log('error J en front', error);
+      console.log('error J al crear nota', error);
     }
-    
-        /* FUNCIONALIDAD NORMAL DE LISTADO DE NOTAS!
-            // event.preventDefault();
-            // props.setearNota(input);
-            // setInput( {
-            //   titulo: '', 
-            //   contenido: ''} 
-            // );
-        */
   }
     
   return ( 
@@ -78,7 +82,7 @@ const AreaNuevaNota = (props) => {
           type="submit"
           onClick={manejoClickSubmit}
         >
-          <FontAwesomeIcon className="btn-agregar" icon={faPlus} />
+          <FontAwesomeIcon className="btn-agregar" icon={props.modoEdicion ? faCheck : faPlus} />
         </button>
       </form>
     </div>

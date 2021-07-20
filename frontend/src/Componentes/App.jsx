@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import Header from './Header';
-import Footer from './Footer';
+// import Footer from './Footer';
 // import AreaNuevaNota from './AreaNuevaNota';
 // import AreaNotas from './AreaNotas';
 import Ingreso from './ingreso/Ingreso';
@@ -11,7 +11,7 @@ import '../Estilos/App.scss'
 
 const App = () => {
 
-  // //STATE DE LISTA DE NOTAS QUE SE MUESTRAN
+  //STATE DE LISTA DE NOTAS QUE SE MUESTRAN
   const [listaNotas, setListaNotas] = useState([]);
 
   //STATE DE RUTA PARA INICIO DE SESIÓN, REGISTRO Y USO
@@ -32,24 +32,26 @@ const App = () => {
         setUsuarioActivo={setUsuarioActivo} 
         setListaNotas={setListaNotas} 
       />           
-      <div className="div-body"> 
-        {(ruta === 'login' || ruta === 'registro') 
-          ?
-            <Ingreso 
-              ruta={ruta} 
-              cambioRuta={cambioRuta}
-              usuarioActivo={usuarioActivo}
-              setUsuarioActivo={setUsuarioActivo}
-            />
-          :
-            <CuerpoNotas 
-              usuarioActivo={usuarioActivo}
-              listaNotas={listaNotas} 
-              setListaNotas={setListaNotas} 
-            />
-        } 
-      </div>   
-      <Footer />
+      {/* <div className="body-edicion"> */}
+        <div className="div-body"> 
+          {(ruta === 'login' || ruta === 'registro') 
+            ?
+              <Ingreso 
+                ruta={ruta} 
+                cambioRuta={cambioRuta}
+                usuarioActivo={usuarioActivo}
+                setUsuarioActivo={setUsuarioActivo}
+              />
+            :
+              <CuerpoNotas 
+                usuarioActivo={usuarioActivo}
+                listaNotas={listaNotas} 
+                setListaNotas={setListaNotas} 
+              />
+          } 
+        </div>  
+      {/* </div> */}
+      {/* <Footer /> */}
     </>
   );
 }

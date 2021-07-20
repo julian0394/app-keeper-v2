@@ -3,8 +3,7 @@ import Nota from '../Nota';
 
 const AreaNotas = (props) => {
     
-  useEffect( (props) => {
-    console.log('use effect busca el id ' + props.usuarioActivo.ID_usuario);
+  useEffect( () => {
     props.buscarNotasEnDB();
   }, []);
 
@@ -22,6 +21,8 @@ const AreaNotas = (props) => {
                 contenido={notita.cuerpoNota}
                 setListaNotas={props.setListaNotas}
                 buscarNotasEnDB={props.buscarNotasEnDB}
+                editarNota={props.editarNota}
+                setNotaParaEditar={props.setNotaParaEditar}
               />
             })}
           </ul>

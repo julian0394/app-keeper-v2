@@ -8,16 +8,23 @@ const Nota = (props) => {
   
   const manejoBotonBorrar = async () => {
     try {
-      console.log('borrando..');
       const idBorrar = await props.id;
-      console.log('id a borrar: ', idBorrar);
       await axios.post('http://localhost:3030/notas/borrar', {ID_nota: idBorrar});
-      console.log('borrado!');
       
       await props.buscarNotasEnDB();
-    } catch {
-      console.log('Error J en front')
+    } catch(error) {
+      console.log('Error J al borrar', error)
     }
+  }
+
+  const manejoBotonEditar = () => {
+    const notaVieja = {
+      ID_nota: props.id,
+      tituloNota: props.titulo,
+      cuerpoNota: props.contenido,
+    };
+    props.setNotaParaEditar(notaVieja);
+    props.editarNota()
   }
 
   return (
@@ -33,7 +40,7 @@ const Nota = (props) => {
         
         
         <div className="tooltip">
-          <button /*onClick={ () => {props.btnBorrar(props.id)} }*/ >
+          <button onClick={manejoBotonEditar}>
             <FontAwesomeIcon className="btn-nota btn-editar" icon={faEdit} />
           <p className="texto-tooltip">Editar</p>
           </button>

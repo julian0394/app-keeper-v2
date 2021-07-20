@@ -26,7 +26,6 @@ const Login = (props) => {
   const manejoClickLogin = async (event) => {
     try {
       event.preventDefault();
-      console.log('usuario enviado al backend');
       
       const resultado = await axios.post('http://localhost:3030/login', { 
         nombreUsuario: login.usuario.trim(),
@@ -47,7 +46,7 @@ const Login = (props) => {
         await props.setInputIncorrecto(2); /* Mje que hubo campos vacios */
     } 
     catch (error) {
-      console.log('error J en front', error);
+      console.log('error J al logear', error);
     }
   }
 
