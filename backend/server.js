@@ -120,8 +120,22 @@ app.post('/notas/mostrar', (req, res) => {
 
 
 /* Edicion de nota existente */
-app.put('/notas/editar', (req, res) => {
-
+app.post('/notas/editar', (req, res) => {
+  const {tituloNota, cuerpoNota, ID_nota} = req.body;
+  const query = editarNota(tituloNota, cuerpoNota, ID_nota); 
+  db.query(query, (err, resultado) => {
+    if(err)
+      if (err.errno === 1406) {
+        console.log('ERROR, TITULO MUY LARGO', err);
+        res.send('error'); 
+      } else {
+        console.log('ERROR AL EDITAR', err.errno);
+      }
+    else {
+      console.log('NOTA EDITADA');
+      res.send(resultado);     
+    }
+  }); 
 });
 
 
@@ -178,6 +192,14 @@ const buscarNotasEnDB = (ID_usuario) => {
   return`
     SELECT * FROM Notas WHERE ID_usuario = ${ID_usuario};
   `;
+}
+
+const editarNota = (tituloNota, cuerpoNota, id) => {
+  return `
+    UPDATE notas 
+    SET tituloNota = '${tituloNota}', cuerpoNota = '${cuerpoNota}'
+    WHERE ID_nota = ${id};
+  `;  
 }
 
 const borrarNotaEnBD = (ID_nota) => {

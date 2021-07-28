@@ -21,7 +21,7 @@ const AreaNotas = (props) => {
                 contenido={notita.cuerpoNota}
                 setListaNotas={props.setListaNotas}
                 buscarNotasEnDB={props.buscarNotasEnDB}
-                editarNota={props.editarNota}
+                toggleModoEdicion={props.toggleModoEdicion}
                 setNotaParaEditar={props.setNotaParaEditar}
               />
             })}

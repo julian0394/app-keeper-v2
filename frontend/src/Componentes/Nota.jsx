@@ -19,12 +19,12 @@ const Nota = (props) => {
 
   const manejoBotonEditar = () => {
     const notaVieja = {
-      ID_nota: props.id,
       tituloNota: props.titulo,
       cuerpoNota: props.contenido,
+      ID_nota: props.id,
     };
     props.setNotaParaEditar(notaVieja);
-    props.editarNota()
+    props.toggleModoEdicion();
   }
 
   return (

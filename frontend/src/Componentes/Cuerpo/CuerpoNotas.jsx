@@ -1,6 +1,7 @@
 import React, { useState } from 'react'; 
 import AreaNuevaNota from './AreaNuevaNota';
 import AreaNotas from './AreaNotas';
+import Modal from '../Modal';
 
 const axios = require('axios').default;
 
@@ -9,7 +10,11 @@ const CuerpoNotas = (props) => {
   // STATE DEL 'MODO EDICION'
   const [modoEdicion, setModoEdicion] = useState(false);
 
-  // STATE DEL "NOTA A MODIFICAR"
+  const toggleModoEdicion = () => {
+    setModoEdicion(!modoEdicion);
+  }
+
+  // STATE DEL "NOTA A MODIFICAR" (solo pora mostrar el texto para editarlo)
   const [notaParaEditar, setNotaParaEditar] = useState({});
 
   const buscarNotasEnDB = async () => {
@@ -25,47 +30,46 @@ const CuerpoNotas = (props) => {
     } 
   }
 
-  const editarNota = () => {
-    // OK - copiar contenido de nota
-    setModoEdicion(!modoEdicion);
-    
-    //OK - pasarlo a nuevaNota
-
-    // oscurecer el fondo
-
-    // guardar id para enviar modificacion a BD
-    
-    console.log('modo edicion:', modoEdicion);
-  }
+  // Evitar el desplazamiento vertical de la app (de fondo) durante el 'modo edicion'
+  if(modoEdicion) 
+    document.body.classList.add('sin-scroll')
+  else 
+    document.body.classList.remove('sin-scroll')
 
   return ( 
     <div className="contenedor-notas">
-      <div className={modoEdicion ? "edicion-habilitada" : "" }>
-        <AreaNuevaNota 
+      <AreaNuevaNota 
+        setListaNotas={props.setListaNotas}
+        usuarioActivo={props.usuarioActivo} 
+        listaNotas={props.listaNotas} 
+        buscarNotasEnDB={buscarNotasEnDB}
+      />       
+      <AreaNotas 
+        listaNotas={props.listaNotas} 
+        setListaNotas={props.setListaNotas} 
+        usuarioActivo={props.usuarioActivo}
+        buscarNotasEnDB={buscarNotasEnDB}
+
+        setNotaParaEditar={setNotaParaEditar}
+        // notaParaEditar={notaParaEditar}
+        toggleModoEdicion={toggleModoEdicion}
+        modoEdicion={modoEdicion}
+      /> 
+      {modoEdicion &&
+        <Modal 
+          toggleModoEdicion={toggleModoEdicion}
+          modoEdicion={modoEdicion}  
+          notaParaEditar={notaParaEditar}
+          
           setListaNotas={props.setListaNotas}
           usuarioActivo={props.usuarioActivo} 
           listaNotas={props.listaNotas} 
           buscarNotasEnDB={buscarNotasEnDB}
-
-          modoEdicion={modoEdicion}
-          notaParaEditar={notaParaEditar}
-          // setNotaParaEditar={setNotaParaEditar}
-          editarNota={editarNota}
-        />       
-        <AreaNotas 
-          listaNotas={props.listaNotas} 
-          setListaNotas={props.setListaNotas} 
-          usuarioActivo={props.usuarioActivo}
-          buscarNotasEnDB={buscarNotasEnDB}
-
-          setNotaParaEditar={setNotaParaEditar}
-          // notaParaEditar={notaParaEditar}
-          editarNota={editarNota}
-          modoEdicion={modoEdicion}
-        />      
-      </div>
+        
+        />
+      }
     </div>
-   );
+  );
 }
  
 export default CuerpoNotas;

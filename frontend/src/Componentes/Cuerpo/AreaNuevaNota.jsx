@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const axios = require('axios').default;
 
@@ -10,7 +10,7 @@ const AreaNuevaNota = (props) => {
     titulo: '',
     contenido: '',
   }
-  
+
   //State de los input ingresados ne la nueva nota
   const [input, setInput] = useState(inputDefault);
 
@@ -24,22 +24,9 @@ const AreaNuevaNota = (props) => {
       }
     });
   }
-
-  try {
-    if (props.modoEdicion) {
-      const viejaNota = {
-        titulo: props.notaParaEditar.tituloNota,
-        contenido: props.notaParaEditar.cuerpoNota
-      }
-      setInput(viejaNota);
-    }
-  }
-  catch {
-    console.log('"error" nuevo');
-    console.log(props.listaNotas);
-  }
-
-  const manejoClickSubmit = async (event) => {
+  
+  // Usado para agregar una nueva nota
+  const manejoClickNuevo = async (event) => {
     try {
       event.preventDefault();
       
@@ -59,7 +46,7 @@ const AreaNuevaNota = (props) => {
       console.log('error J al crear nota', error);
     }
   }
-    
+   
   return ( 
     <div className="contenedor-nueva-nota">
       <form className="crear-nota">
@@ -77,12 +64,8 @@ const AreaNuevaNota = (props) => {
           placeholder="Escriba una nota..." 
           rows="3"
         />
-        <button 
-          className="btn-agregar no-seleccionable"
-          type="submit"
-          onClick={manejoClickSubmit}
-        >
-          <FontAwesomeIcon className="btn-agregar" icon={props.modoEdicion ? faCheck : faPlus} />
+        <button className="btn-agregar no-seleccionable" type="submit" onClick={manejoClickNuevo}>
+          <FontAwesomeIcon className="btn-agregar" icon={faPlus} />
         </button>
       </form>
     </div>
