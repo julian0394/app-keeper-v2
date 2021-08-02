@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import InputFormulario from './InputFormulario';
 import './icono-error.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 const axios = require('axios').default;
 
@@ -23,10 +25,8 @@ const Login = (props) => {
     })
   }
 
-  const manejoClickLogin = async (event) => {
+  const manejoClickLogin = async () => {
     try {
-      event.preventDefault();
-      
       const resultado = await axios.post('http://localhost:3030/login', { 
         nombreUsuario: login.usuario.trim(),
         passUsuario: login.password
@@ -50,6 +50,12 @@ const Login = (props) => {
     }
   }
 
+  const pruebaEnter = (event) => {
+    if(event.key === 'Enter'){
+      console.log('enter press here! ')
+    }
+  }
+
   return (
     <>
       <h1>Inicio de sesión</h1>
@@ -59,6 +65,7 @@ const Login = (props) => {
           nombre="usuario" 
           textoLabel="Usuario" 
           alCambiarInput={cambioLogin} 
+          manejoEnter={manejoClickLogin}
           noValidate
         />
         <InputFormulario 
@@ -66,13 +73,25 @@ const Login = (props) => {
           nombre="password" 
           textoLabel="Contraseña" 
           alCambiarInput={cambioLogin}
+          manejoEnter={manejoClickLogin}
         />
-        
-        {props.inputIncorrecto === 1 && <p className="incorrecto">El usuario o contraseña no coinciden</p>}
-        {props.inputIncorrecto === 2 && <p className="incorrecto">No se aceptan campos vacios</p>}
-        
-        <button onClick={manejoClickLogin}>Ingresar</button>
       </form>
+      
+      {props.inputIncorrecto === 1 && 
+          <div className="error-input">
+            <FontAwesomeIcon className="icono-error-input" icon={faExclamationCircle} />
+            <p className="incorrecto">El usuario o contraseña no coinciden</p>
+          </div>
+        }
+        {props.inputIncorrecto === 2 && 
+          <div className="error-input">
+            <FontAwesomeIcon className="icono-error-input" icon={faExclamationCircle} />
+            <p className="incorrecto">No se aceptan campos vacios</p>
+          </div>
+        }
+      
+      <button className="boton-con-texto btn-ingreso" onClick={manejoClickLogin}>Ingresar</button>
+  
       <p className="registroEInicio">No tienes una cuenta? 
         <a href="./register" onClick={ (evento) => props.alCambiarRuta(evento, 'registro')}>Registrate!</a>
       </p>            

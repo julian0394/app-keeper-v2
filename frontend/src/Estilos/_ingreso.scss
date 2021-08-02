@@ -12,7 +12,7 @@
     -o-border-radius: 7px;
   margin: 60px auto;
 
-  h1{
+  h1 {
     font-size: 1.5rem;
     margin: 50px 0 60px;
   }
@@ -95,48 +95,29 @@
       color: $color-linkHover;
     }
   }
-
-  button {
-    display: block;
-    cursor: pointer;
-    margin: 0 auto;
-    width: 150px;
-    height: 50px;
-    background-color: $color-amarilloBoton;
-    border: 2px solid $color-amarilloBoton;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 500;
-    outline: none;
-    border-radius: 6px;
-      -webkit-border-radius: 6px;
-      -moz-border-radius: 6px;
-      -ms-border-radius: 6px;
-      -o-border-radius: 6px;  
-    margin-bottom: 60px;
-  
-    &:hover {
-      background-color: $color-amarilloHover;
-      border: 2px solid $color-amarilloHover;
-    }
-
-    &:active,
-    &:focus {
-      background-color: $color-amarilloFocus;
-      border: 2px solid $color-amarilloFocus;
-      transform: scale(0.98);
-        -webkit-transform: scale(0.98);
-        -moz-transform: scale(0.98);
-        -ms-transform: scale(0.98);
-        -o-transform: scale(0.98);
-    }
-  }
 }
  
-p.incorrecto {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: $color-textoError;
+.error-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
   margin-top: -25px;
+  width: 120%;
+
+  p.incorrecto {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: $color-textoError;
+  }
+
+  .icono-error-input {
+    font-size: 1.6rem;
+    color: $color-textoError;
+    padding-right: 10px;
+  }
+}
+
+.btn-ingreso {
   margin-bottom: 40px;
 }

@@ -43,38 +43,6 @@
       font-size: 1.2rem;
     }
   }
-
-  .tooltip {
-    position: relative;
-    display: inline-block;
-    
-    .texto-tooltip {
-      visibility: hidden;
-      background-color: $color-fondoGrisTooltip;
-      color: white;
-      text-align: center;
-      padding: 7px 0;
-      border-radius: 6px;
-      
-      /*Posicion*/
-      position: absolute;
-      z-index: 1;
-      width: 70px;
-      top: 135%;
-      left: 50%;
-      margin-left: -35px; /*Usar la mitad del width (70 / 2 = 35px), para centrar la ventanita */
-      
-      // opacity: 0;
-      // animation: popup 1s linear 1s backwards;
-
-      // DUDAS DE ANIMACION PARA POP-UP
-    }
-    
-    &:hover .texto-tooltip {
-      visibility: visible;
-      opacity: 1;
-    }
-  }
 }
 
 // @keyframes popup {

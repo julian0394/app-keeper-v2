@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
 
 import Header from './Header';
-// import Footer from './Footer';
-// import AreaNuevaNota from './AreaNuevaNota';
-// import AreaNotas from './AreaNotas';
 import Ingreso from './ingreso/Ingreso';
 import CuerpoNotas from './Cuerpo/CuerpoNotas';
+import Perfil from './Perfil';
 
 import '../Estilos/App.scss'
 
@@ -31,27 +29,31 @@ const App = () => {
         cambioRuta={cambioRuta} 
         setUsuarioActivo={setUsuarioActivo} 
         setListaNotas={setListaNotas} 
-      />           
-      {/* <div className="body-edicion"> */}
-        <div className="div-body"> 
-          {(ruta === 'login' || ruta === 'registro') 
-            ?
-              <Ingreso 
-                ruta={ruta} 
-                cambioRuta={cambioRuta}
-                usuarioActivo={usuarioActivo}
-                setUsuarioActivo={setUsuarioActivo}
-              />
-            :
-              <CuerpoNotas 
-                usuarioActivo={usuarioActivo}
-                listaNotas={listaNotas} 
-                setListaNotas={setListaNotas} 
-              />
-          } 
-        </div>  
-      {/* </div> */}
-      {/* <Footer /> */}
+      /> 
+      <div className="div-body"> 
+        {ruta === 'perfil' 
+          ?
+            <Perfil 
+              cambioRuta={cambioRuta}
+              usuarioActivo={usuarioActivo} 
+            />
+          :
+            (ruta === 'login' || ruta === 'registro') 
+              ?
+                <Ingreso 
+                  ruta={ruta} 
+                  cambioRuta={cambioRuta}
+                  usuarioActivo={usuarioActivo}
+                  setUsuarioActivo={setUsuarioActivo}
+                />
+              :
+                <CuerpoNotas 
+                  usuarioActivo={usuarioActivo}
+                  listaNotas={listaNotas} 
+                  setListaNotas={setListaNotas} 
+                />
+        } 
+      </div>  
     </>
   );
 }

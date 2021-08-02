@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import InputFormulario from './InputFormulario';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 const axios = require('axios').default;
 
@@ -22,10 +24,8 @@ const Registro = (props) => {
     });
   }
     
-  const manejoClickRegistro = async (event) => {
+  const manejoClickRegistro = async () => {
     try {
-      event.preventDefault();
-      
       if( props.buscarPropiedadVacia(registro) ) {
 
         const resultado = await axios.post('http://localhost:3030/register', {
@@ -60,25 +60,39 @@ const Registro = (props) => {
           nombre="usuario" 
           textoLabel="Usuario" 
           alCambiarInput={cambioRegistro}
+          manejoEnter={manejoClickRegistro}
         />
         <InputFormulario 
           tipo="email" 
           nombre="email" 
           textoLabel="Mail ficticio" 
           alCambiarInput={cambioRegistro}
+          manejoEnter={manejoClickRegistro}
         />
         <InputFormulario 
           tipo="password" 
           nombre="password" 
           textoLabel="Contraseña" 
           alCambiarInput={cambioRegistro}
+          manejoEnter={manejoClickRegistro}
         />
-        
-        {props.inputIncorrecto === 1 && <p className="incorrecto">El usuario o correo ya fue utilizado</p>}
-        {props.inputIncorrecto === 2 && <p className="incorrecto">No se aceptan campos vacios</p>}
-        
-        <button onClick={manejoClickRegistro}>Registrarse</button>
       </form>
+
+      {props.inputIncorrecto === 1 && 
+        <div className="error-input">
+          <FontAwesomeIcon className="icono-error-input" icon={faExclamationCircle} />
+          <p className="incorrecto">El usuario o correo ya fue utilizado</p>
+        </div>
+      }
+      {props.inputIncorrecto === 2 &&       
+        <div className="error-input">
+          <FontAwesomeIcon className="icono-error-input" icon={faExclamationCircle} />
+          <p className="incorrecto">No se aceptan campos vacios</p>
+        </div>
+      }
+
+      <button className="boton-con-texto btn-ingreso" onClick={manejoClickRegistro}>Registrarse</button>
+
       <p className="registroEInicio">Ya tienes una cuenta?
         <a onClick={(evento) => props.alCambiarRuta(evento, 'login')} href="./login">Inicia sesión!</a>
       </p>        

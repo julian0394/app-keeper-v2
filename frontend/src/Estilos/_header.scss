@@ -14,10 +14,59 @@ header {
     font-weight: 200;
   }
 
-  p {
+  .item {
+    display: block;
     color: #000;
     font-size: 1.1rem;
-    text-decoration: underline;
     cursor: pointer;
+    // padding: 15px 0;
+    text-align: center;
+    
+    &:hover {
+      text-decoration: underline;
+    }
   }
+
+  .logo {
+    font-size: 1.7rem;
+    margin-right: 10px;
+  }
+
+  .usuario-header {
+    display: flex;
+    align-items: center;
+
+    .foto-usuario {
+      border-radius: 50px;
+      cursor: pointer;
+    }
+  
+    .flecha-menu {
+      font-size: 1.5rem; // Tamaño del icono
+      cursor: pointer;
+      margin-left: 10px;
+      color: #242424;
+    }
+  }  
 }
+
+  .menu {
+    // position: absolute;
+    // left: 88%;
+    // top: 10%;
+    // padding: 20px;
+    // width: 10%;
+    // background-color: darkgrey;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: space-evenly;
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+
+    .item {
+      margin-left: 20px;
+      color: white;
+      font-size: 1.8rem; 
+    }
+  }

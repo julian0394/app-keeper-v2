@@ -10,6 +10,12 @@ const InputFormulario = (props) => {
     props.alCambiarInput(name, value);
   }
 
+  const manejoEnterPresionado = (event) => {
+    if(event.key === 'Enter'){
+      props.manejoEnter();
+    }
+  }
+
   return (  
     <div className="input-form">
       <input 
@@ -19,6 +25,7 @@ const InputFormulario = (props) => {
         value={input} 
         placeholder=" " /* Placeholder vacio sirve para activar la animacion*/
         onChange={alCambiar}
+        onKeyPress={manejoEnterPresionado}
       />
       <label className="no-seleccionable">{props.textoLabel}</label>
     </div>

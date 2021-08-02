@@ -3,7 +3,6 @@ const mysql = require('mysql');
 const cors = require('cors');
 
 
-
 // Usos de paquetes y middleware
 const app = express();
 app.use(express.json());
@@ -60,9 +59,11 @@ app.post('/login', (req, res) => {
 
 /* Registro de nuevo usuario */
 app.post('/register', (req, res) => {
+    /* 2 PARTES */
     const {nombreUsuario, mailUsuario, passUsuario} = req.body;
     const query = insertarUsuarioEnBD(nombreUsuario, mailUsuario, passUsuario);
 
+    /* 1ro insterto usuario en BD */
     db.query(query, (err, resultado) => {
       if(err){
         if (err.errno === 1062) {
@@ -74,6 +75,7 @@ app.post('/register', (req, res) => {
         }  
       }
       else {
+        /* 2do busco datos de usuario para instanciarlo en la App */
         console.log("INSERTADO");
         const idInsertada = resultado.insertId;
         db.query( buscarEnDBConID(idInsertada), (err2, resultado2) => {
@@ -155,7 +157,7 @@ app.post('/notas/borrar', (req, res) => {
  });
 });
 
-
+/*------------------------------------------------------------------------------------------------------------------------*/
 
 // Queries
 const buscarUsuarioEnDB = (nombreUsuario, passUsuario) => {
@@ -166,19 +168,19 @@ const buscarUsuarioEnDB = (nombreUsuario, passUsuario) => {
   `;  
 }
 
-const buscarEnDBConID = (id) => {
-  return `
-    SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
-    FROM Usuarios 
-    WHERE ID_usuario = ${id};
-  `;  
-}
-
 const insertarUsuarioEnBD = (nombreUsuario, mailUsuario, passUsuario) => {
   return`
     INSERT INTO Usuarios 
     VALUES (null, '${nombreUsuario}', '${mailUsuario}', '${passUsuario}', '${calcularFecha()}', 0, null);
   `;
+}
+
+const buscarEnDBConID = (id) => { /* Retorna usuario para instanciarlo en la app */
+  return `
+    SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
+    FROM Usuarios 
+    WHERE ID_usuario = ${id};
+  `;  
 }
 
 const insertarNotaEnBD = (tituloNota, cuerpoNota, ID_usuario) => {
