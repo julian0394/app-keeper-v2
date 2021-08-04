@@ -2,52 +2,79 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 50px;
 
-  form button {
-    background-color: chocolate; 
-    cursor: pointer;
+  // form button {
+  //   background-color: chocolate; 
+  //   cursor: pointer;
+  // }
+
+  h2, h3 {
+    margin-bottom: 20px;
   }
 
   p {
     padding-top: 35px;
   }
 
-  // Input de imagen seleccionado asi
-  [type="file"] { 
-    border: 0;
-    clip: rect(0, 0, 0, 0);
-    height: 1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute !important;
-    white-space: nowrap;
-    width: 1px;
-  }
+  
+  [type="file"] { // Input de imagen seleccionado asi
+    // Lo siguiente teoricamente lo haria invisible sin afectar su funcionalidad
+    // border: 0;
+    // clip: rect(0, 0, 0, 0);
+    // height: 1px;
+    // overflow: hidden;
+    // padding: 0;
+    // position: absolute;
+    // white-space: nowrap;
+    // width: 1px;
 
-  .label-foto {
-    color: $color-amarilloBoton;
-    font-size: 1.5rem;
-    background-color: white;
-    padding: 10px 13px;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px #ccc;
-    cursor: pointer;
-
-    &:hover {
-      color: $color-amarilloHover;
-    }
-    &:active {
-      color: $color-amarilloFocus;
-    }
+    display: none; // Al parecer esto tampoco afecta su funcionalidad...
   }
 
   .foto-usuario {
     border-radius: 50%;
-    border: solid 1px #bbbbbb;
+    box-shadow: 0 2px 5px #ccc;
     width:  200px;
     height: 200px;
+    object-fit: cover;
+  }
+
+  .botones-foto {
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 50px;
+    
+    .label-foto { // Boton 'subir imagen'
+      color: $color-amarilloBoton;
+      font-size: 1.5rem;
+      background-color: white;
+      padding: 10px 13px;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px #ccc;
+      cursor: pointer;
+  
+      &:hover {
+        color: $color-amarilloHover;
+      }
+      &:active {
+        color: $color-amarilloFocus;
+      }
+      // align-self: flex-start;
+    }
+    
+    .borrar-imagen {
+      font-size: 1.3rem;
+      color: #424242;
+      cursor: pointer;
+      align-self: flex-end;
+    }
   }
 }
+
+
 
 .anulado {
   background-color: cornsilk;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const axios = require('axios').default;
 
@@ -48,7 +48,8 @@ const Modal = (props) => {
       <div className="contenido-modal">
         <h2>Editar nota :)</h2>
 
-        <button className="btn-cerrar-modal" onClick={props.toggleModoEdicion}> X </button>
+        <FontAwesomeIcon className="btn-cerrar-modal" icon={faTimes} onClick={props.toggleModoEdicion} />
+        {/* <button className="btn-cerrar-modal" onClick={props.toggleModoEdicion}> X </button> */}
 
         <form className="crear-nota">
           <input 

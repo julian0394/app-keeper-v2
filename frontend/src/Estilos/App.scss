@@ -144,6 +144,12 @@ body {
   }
 }
 
+.incorrecto {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: $color-textoError;
+}
+
 @import './areaNuevaNota';
 @import './footer';
 @import './header';
