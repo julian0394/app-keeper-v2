@@ -100,8 +100,8 @@ body {
     border: 2px solid $color-amarilloHover;
   }
 
-  &:active,
-  &:focus {
+  &:active/*,
+  &:focus */ {
     background-color: $color-amarilloFocus;
     border: 2px solid $color-amarilloFocus;
     transform: scale(0.98);

@@ -10,7 +10,7 @@ const AreaNotas = (props) => {
   return ( 
     <>
       {props.listaNotas.length === 0 
-      ? <div className="div-sin-notas">No hay notas que mostrar</div> 
+      ? <div className="div-sin-notas no-seleccionable">No hay notas que mostrar</div> 
       : <div className="lista-notas">
           <ul>
             {props.listaNotas.map( notita => {

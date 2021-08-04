@@ -1,4 +1,8 @@
 .perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   form button {
     background-color: chocolate; 
     cursor: pointer;
@@ -6,6 +10,42 @@
 
   p {
     padding-top: 35px;
+  }
+
+  // Input de imagen seleccionado asi
+  [type="file"] { 
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  .label-foto {
+    color: $color-amarilloBoton;
+    font-size: 1.5rem;
+    background-color: white;
+    padding: 10px 13px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px #ccc;
+    cursor: pointer;
+
+    &:hover {
+      color: $color-amarilloHover;
+    }
+    &:active {
+      color: $color-amarilloFocus;
+    }
+  }
+
+  .foto-usuario {
+    border-radius: 50%;
+    border: solid 1px #bbbbbb;
+    width:  200px;
+    height: 200px;
   }
 }
 

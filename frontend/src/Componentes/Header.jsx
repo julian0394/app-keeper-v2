@@ -34,7 +34,7 @@ const Header = (props) => {
           <div className="usuario-header menu">
             
             <div className="tooltip">
-              <img className="foto-usuario" onClick={manejoBotonPerfil} src={sinFoto} alt="Foto gris generica" />
+              <img className="foto-usuario no-seleccionable" onClick={manejoBotonPerfil} src={sinFoto} alt="Foto gris generica" />
               <p className="texto-tooltip">Perfil</p>
             </div>
               

@@ -50,12 +50,6 @@ const Login = (props) => {
     }
   }
 
-  const pruebaEnter = (event) => {
-    if(event.key === 'Enter'){
-      console.log('enter press here! ')
-    }
-  }
-
   return (
     <>
       <h1>Inicio de sesión</h1>

@@ -27,6 +27,7 @@ const App = () => {
       <Header 
         ruta={ruta} 
         cambioRuta={cambioRuta} 
+        usuarioActivo={usuarioActivo}
         setUsuarioActivo={setUsuarioActivo} 
         setListaNotas={setListaNotas} 
       /> 

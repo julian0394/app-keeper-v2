@@ -89,6 +89,7 @@ app.post('/register', (req, res) => {
 /* Agregar nueva nota */
 app.post('/notas/nueva', (req, res) => {
   const {tituloNota, cuerpoNota, ID_usuario} = req.body;
+
   const query = insertarNotaEnBD(tituloNota, cuerpoNota, ID_usuario); 
   db.query(query, (err, resultado) => {
     if(err)
