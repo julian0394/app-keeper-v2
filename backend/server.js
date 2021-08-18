@@ -4,16 +4,18 @@ const cors = require('cors');
 
 
 // Usos de paquetes y middleware
+require('dotenv').config();
+
 const app = express();
 app.use(express.json());
 
 app.use(cors());
 
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "password",
-  database: "tp_vazquez", 
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password:process.env.BD_PASS,
+  database: process.env.DB_DATABASE, 
 });
 
 db.connect( err => {
@@ -24,7 +26,6 @@ db.connect( err => {
   console.log('Conectado a BD correctamente');
 });
  
-
 
 // Funciones server / rutas 
 app.listen( process.env.PORT || 3030, () => { /* process.env.PORT es para el servidor de heroku una vez subido */
@@ -158,6 +159,22 @@ app.post('/notas/borrar', (req, res) => {
  });
 });
 
+app.post('/imagenUsuario/subir', (req, res) => {
+  const {link, ID_usuario} = req.body; 
+  const query = editarFotoPerfil(link, ID_usuario); 
+  console.log('cambiando foto');
+
+  db.query(query, (err, resultado) => {
+    if(err) {
+      console.log('error J en server', err);
+      res.send(err);
+    } else {
+      res.send(resultado);
+      console.log('foto cambiada');
+    }
+  });
+});
+
 /*------------------------------------------------------------------------------------------------------------------------*/
 
 // Queries
@@ -209,6 +226,14 @@ const borrarNotaEnBD = (ID_nota) => {
   return`
     DELETE FROM notas WHERE ID_nota = ${ID_nota};
   `;
+}
+
+const editarFotoPerfil = (link, ID_usuario) => {
+  return `
+    UPDATE usuarios
+    SET fotoUsuario = '${link}'
+    WHERE ID_usuario = ${ID_usuario};
+  `
 }
 
 

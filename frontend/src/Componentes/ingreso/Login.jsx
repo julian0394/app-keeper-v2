@@ -29,7 +29,7 @@ const Login = (props) => {
     try {
       const resultado = await axios.post('http://localhost:3030/login', { 
         nombreUsuario: login.usuario.trim(),
-        passUsuario: login.password
+        passUsuario: login.password.trim()
       });
       
       if( props.buscarPropiedadVacia(login) ) {
@@ -84,7 +84,7 @@ const Login = (props) => {
           </div>
         }
       
-      <button className="boton-con-texto btn-ingreso" onClick={manejoClickLogin}>Ingresar</button>
+      <button className="boton-con-texto btn-ingreso" onClick={manejoClickLogin}>Comenzar</button>
   
       <p className="registroEInicio">No tienes una cuenta? 
         <a href="./register" onClick={ (evento) => props.alCambiarRuta(evento, 'registro')}>Registrate!</a>
