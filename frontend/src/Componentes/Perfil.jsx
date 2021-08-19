@@ -16,7 +16,7 @@ const Perfil = (props) => {
   const [imagenElegida, setImagenElegida] = useState(null);
 
   // STATE PARA MOSTRAR LA IMAGEN SELECCIONADA
-  const [preview, setPreview] = useState('');
+  const [preview, setPreview] = useState(null);
 
   // TRIGGER PARA MENSAJES DE ERROR DE IMAGEN
   const [malInput, setMalInput] = useState(false);
@@ -24,16 +24,15 @@ const Perfil = (props) => {
   const manejoBotonVolver = async (e) => {
     e.preventDefault();
 
-    // HACER UN IF PARA QUE NO HAGA EL FETCH SI NO HUBO CAMBIOS
-    // RE INSTANCIAR EL USUARIO PARA QUE ACTUALICE LA FOTO
+    const fd = new FormData();
+    fd.append('file', imagenElegida);
+    fd.append('upload_preset', 'ar1mfxjp');
 
-      const fd = new FormData();
-      fd.append('file', imagenElegida);
-      fd.append('upload_preset', 'ar1mfxjp');
+    const linkImg = await subirImagen(fd);
 
-      const linkImg = await subirImagen(fd);
+    const nuevoUser = await imagenABase(linkImg);
 
-      await imagenABase(linkImg);
+    await props.setUsuarioActivo(nuevoUser);
 
     await props.cambioRuta('notas');
   }
@@ -61,15 +60,15 @@ const Perfil = (props) => {
   }
 
   const cargarPreview = async () => {
-    if (imagenElegida !== null) {
+    // if (imagenElegida !== null) {
       const reader = new FileReader();
       reader.onloadend = () => { 
         setPreview(reader.result);
       }
       reader.readAsDataURL(imagenElegida);
-    } else {
-      setPreview('');
-    }
+    // } else {
+    //   setPreview(null);
+    // }
   }
 
   const subirImagen = async (formData) => {     
@@ -91,10 +90,11 @@ const Perfil = (props) => {
   const imagenABase = async (linkImg) => {
     console.log("entrando a backend");
 
-    /* Guarda link en BD */
+    /* Guarda link de la foto en BD */
     try {
+      console.log('primer try');
       const respuestaDB = await axios.post(
-        'http://localhost:3030/imagenUsuario/subir', 
+        'http://localhost:3030/usuario/subir-foto', 
         {
           link: linkImg,
           ID_usuario: props.usuarioActivo.ID_usuario
@@ -103,6 +103,19 @@ const Perfil = (props) => {
     } catch (err) {
       console.log('Error front J al cargar img en DB', err);
     }
+
+    /* Trae de nuevo el usuario para mostrar su foto */
+    try {
+      console.log('segundo try');
+      const usuarioConFoto = await axios.post(
+        'http://localhost:3030/usuario/buscar', { ID_usuario: props.usuarioActivo.ID_usuario }
+      );
+      console.log('listo:', usuarioConFoto);
+      return usuarioConFoto.data[0];
+    } catch (err) {
+      console.log('Error front J al traer usuario (2°)', err);
+    }
+
   }
 
   // SELECCION DE IMAGEN PREVIA
@@ -124,7 +137,6 @@ const Perfil = (props) => {
   // CARGA LA VISTA PREVIA DE LA IMAGEN SELECCIONADA
   useEffect( () => { 
     cargarPreview();
-    // console.log('imagen en state 2:', imagenElegida);
   }, [imagenElegida]);   
  
 
@@ -137,12 +149,11 @@ const Perfil = (props) => {
       <img 
         className="foto-usuario" 
         src={imagenVieja !== null ? imagenVieja 
-          : imagenElegida === null ? sinFoto : preview} 
+          : preview !== null ? preview : sinFoto} 
         alt="Foto de perfil" 
       />
       {/* <img className="foto-usuario" src={selectorImagen} alt="Foto de perfil" /> */}
-      
-      <form /*action="POST" onSubmit={manejoBotonEnviarImagen} encType="multipart/form-data"*/ >
+      <form >
         <input 
           type="file" 
           onChange={manejoCambioImagen}

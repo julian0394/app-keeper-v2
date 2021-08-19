@@ -159,7 +159,7 @@ app.post('/notas/borrar', (req, res) => {
  });
 });
 
-app.post('/imagenUsuario/subir', (req, res) => {
+app.post('/usuario/subir-foto', (req, res) => {
   const {link, ID_usuario} = req.body; 
   const query = editarFotoPerfil(link, ID_usuario); 
   console.log('cambiando foto');
@@ -175,13 +175,28 @@ app.post('/imagenUsuario/subir', (req, res) => {
   });
 });
 
+app.post('/usuario/buscar', (req,res) => {
+  const {ID_usuario} = req.body
+  const query = buscarUsuarioPorId(ID_usuario)
+  console.log('llamando usuario... again..')
+  db.query(query, (err, resultado) => {
+    if(err) {
+      console.log('Error J en server', err)
+      res.send(err)
+    } else {
+      console.log(resultado)
+      res.send(resultado)
+    }
+  })
+})
+
 /*------------------------------------------------------------------------------------------------------------------------*/
 
 // Queries
 const buscarUsuarioEnDB = (nombreUsuario, passUsuario) => {
   return `
     SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
-    FROM Usuarios 
+    FROM usuarios 
     WHERE nombreUsuario = '${nombreUsuario}' AND passUsuario = '${passUsuario}';
   `;  
 }
@@ -230,9 +245,14 @@ const borrarNotaEnBD = (ID_nota) => {
 
 const editarFotoPerfil = (link, ID_usuario) => {
   return `
-    UPDATE usuarios
-    SET fotoUsuario = '${link}'
-    WHERE ID_usuario = ${ID_usuario};
+    UPDATE usuarios SET fotoUsuario = '${link}'WHERE ID_usuario = ${ID_usuario};
+  `
+}
+
+const buscarUsuarioPorId = (ID_usuario) => {
+  return `
+  SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
+  FROM usuarios WHERE ID_usuario = ${ID_usuario};
   `
 }
 

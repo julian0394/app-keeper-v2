@@ -36,7 +36,8 @@ const App = () => {
           ?
             <Perfil 
               cambioRuta={cambioRuta}
-              usuarioActivo={usuarioActivo} 
+              usuarioActivo={usuarioActivo}
+              setUsuarioActivo={setUsuarioActivo} 
             />
           :
             (ruta === 'login' || ruta === 'registro') 
