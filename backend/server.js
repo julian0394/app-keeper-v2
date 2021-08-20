@@ -44,7 +44,7 @@ app.post('/login', (req, res) => {
   const query = buscarUsuarioEnDB(nombreUsuario, passUsuario); 
   db.query(query, (err, resultado) => {
     if(err)
-      console.log('error J en server', err);
+      console.log('error J en server al logear', err);
     else {
       if(resultado.length > 0) {
         console.log('ACCESO PERMITIDO');
@@ -114,7 +114,7 @@ app.post('/notas/mostrar', (req, res) => {
   const query = buscarNotasEnDB(ID_usuario); 
   db.query(query, (err, resultado) => {
     if(err) {
-      console.log('error J en server');
+      console.log('error J en server al mostrar notas', err);
       res.send(err);
     } else 
       res.send(resultado);
@@ -133,7 +133,7 @@ app.post('/notas/editar', (req, res) => {
         console.log('ERROR, TITULO MUY LARGO', err);
         res.send('error'); 
       } else {
-        console.log('ERROR AL EDITAR', err.errno);
+        console.log('error server J al editar nota', err.errno);
       }
     else {
       console.log('NOTA EDITADA');
@@ -150,7 +150,7 @@ app.post('/notas/borrar', (req, res) => {
  console.log('intentando borrar..');
  db.query(query, (err, resultado) => {
   if(err) {
-    console.log('error J en server', err);
+    console.log('error J en server al borrar nota', err);
     res.send(err);
   } else {
     res.send(resultado);
@@ -159,14 +159,16 @@ app.post('/notas/borrar', (req, res) => {
  });
 });
 
-app.post('/usuario/subir-foto', (req, res) => {
+
+/* Cambiar foto de usuario (nueva o cambio) */
+app.post('/usuario/cambiar-foto', (req, res) => {
   const {link, ID_usuario} = req.body; 
   const query = editarFotoPerfil(link, ID_usuario); 
   console.log('cambiando foto');
 
   db.query(query, (err, resultado) => {
     if(err) {
-      console.log('error J en server', err);
+      console.log('error J en server al cambiar foto', err);
       res.send(err);
     } else {
       res.send(resultado);
@@ -175,17 +177,38 @@ app.post('/usuario/subir-foto', (req, res) => {
   });
 });
 
+
+/* Borrar foto de usuario (deja en null) */
+app.post('/usuario/borrar-foto', (req, res) => {
+  const {ID_usuario} = req.body; 
+  const query = borrarFotoPerfil(ID_usuario); 
+  console.log('borrando foto');
+
+  db.query(query, (err, resultado) => {
+    if(err) {
+      console.log('error J en server al borrar foto', err);
+      res.send(err);
+    } else {
+      res.send(resultado);
+      console.log('foto borrada');
+    }
+  });
+});
+
+
+/* Busca el usuario solo por ID (ya logeado) al cambiar o borrar imagen */
 app.post('/usuario/buscar', (req,res) => {
   const {ID_usuario} = req.body
   const query = buscarUsuarioPorId(ID_usuario)
   console.log('llamando usuario... again..')
+
   db.query(query, (err, resultado) => {
     if(err) {
-      console.log('Error J en server', err)
+      console.log('Error J en server al buscar usuario por id', err)
       res.send(err)
     } else {
-      console.log(resultado)
       res.send(resultado)
+      console.log('usuario enviado al front');
     }
   })
 })
@@ -245,7 +268,13 @@ const borrarNotaEnBD = (ID_nota) => {
 
 const editarFotoPerfil = (link, ID_usuario) => {
   return `
-    UPDATE usuarios SET fotoUsuario = '${link}'WHERE ID_usuario = ${ID_usuario};
+    UPDATE usuarios SET fotoUsuario = '${link}' WHERE ID_usuario = ${ID_usuario};
+  `
+}
+
+const borrarFotoPerfil = (ID_usuario) => {
+  return `
+    UPDATE usuarios SET fotoUsuario = null WHERE ID_usuario = ${ID_usuario};
   `
 }
 

@@ -18,7 +18,7 @@ const CuerpoNotas = (props) => {
   const [notaParaEditar, setNotaParaEditar] = useState({});
 
   const buscarNotasEnDB = async () => {
-    const idUsuario = props.usuarioActivo.ID_usuario;
+    const idUsuario = await props.usuarioActivo.ID_usuario;
     try {  
       const resultado = await axios.post('http://localhost:3030/notas/mostrar', { 
         ID_usuario: idUsuario
