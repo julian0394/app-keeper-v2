@@ -19,7 +19,6 @@ header {
     color: #000;
     font-size: 1.1rem;
     cursor: pointer;
-    // padding: 15px 0;
     text-align: center;
     
     &:hover {
@@ -38,6 +37,7 @@ header {
 
     .foto-usuario {
       border-radius: 50%;
+      border: 1px solid lightgray;
       cursor: pointer;
     }
   

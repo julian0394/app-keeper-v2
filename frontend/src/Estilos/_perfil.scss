@@ -4,11 +4,6 @@
   align-items: center;
   margin-top: 50px;
 
-  // form button {
-  //   background-color: chocolate; 
-  //   cursor: pointer;
-  // }
-
   h2, h3 {
     margin-bottom: 20px;
   }
@@ -62,7 +57,6 @@
       &:active {
         color: $color-amarilloFocus;
       }
-      // align-self: flex-start;
     }
     
     .borrar-imagen {
@@ -72,9 +66,54 @@
       align-self: flex-end;
     }
   }
+
+  .botones-perfil {
+    display: flex;
+    justify-content: space-between;
+
+    .boton-con-texto {
+      margin: 2px;
+    }
+  }
+
+  .nombre {
+    display: flex;
+    margin-left: 10px;
+
+    .btn-editar-nombre {
+      margin-left: 10px;
+      color: $color-amarilloBoton;
+      font-size: 1.2rem;
+      cursor: pointer;
+    
+      &:hover {
+        color: $color-amarilloHover;
+      }
+      &:active {
+        color: $color-amarilloFocus;
+      }
+    }
+  }
+
+  input {
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 600
+  }
+
+  .datos-generales h3 {
+    margin: 2rem auto;
+    color: #616161;
+    font-weight: 500;
+  }
+
 }
 
-
+.separador {
+  width: 50%;
+  margin: 4rem auto;
+  border-bottom: 2px solid lightgray;
+}
 
 .anulado {
   background-color: cornsilk;

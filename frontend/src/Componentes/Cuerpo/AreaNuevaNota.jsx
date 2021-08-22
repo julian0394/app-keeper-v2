@@ -40,6 +40,8 @@ const AreaNuevaNota = (props) => {
       await props.buscarNotasEnDB();
 
       setInput(inputDefault);
+
+      await props.editarDatoNota('suma');
       /* falta validar inputs vacias (mas adelante con dependencias) */
     }
     catch (error) {

@@ -3,14 +3,13 @@ import React, { useState, useEffect } from 'react';
 import sinFoto from '../usuario-sin-foto.png';
 // Iconos
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpload, faTimes, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faUpload, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const axios = require('axios').default;
 
 const Perfil = (props) => {
 
-  // STATE DONDE SE ALMACENARÁ LA IMAGEN ELEGIDA PARA CAMBIAR
-  const [imagenState, setImagenState] = useState(props.usuarioActivo.fotoUsuario);
+  const imagenState = props.usuarioActivo.fotoUsuario;
 
   // STATE DONDE SE ALMACENARÁ LA IMAGEN ELEGIDA PARA CAMBIAR
   const [imagenElegida, setImagenElegida] = useState(null);
@@ -48,6 +47,10 @@ const Perfil = (props) => {
     }
   }
 
+  const manejoBotonCancelar = () => {
+    props.cambioRuta('notas');
+  }
+
   const manejoCambioImagen = async (event) => {
     try {
       const foto = event.target.files[0] /*|| event.dataTransfer.files[0];*/ // En este caso con un solo input, se toma el primer elemento del array
@@ -69,24 +72,20 @@ const Perfil = (props) => {
   const borrarFoto = () => {
     setImagenElegida(null);
     setPreview(sinFoto);
-    console.log('imagen borrada');
   }
 
   const cargarPreview = async () => {
-    // if (props.usuarioActivo.fotoUsuario !== null) {
-    //   setPreview(props.usuarioActivo.fotoUsuario);
-    // } else {
-      if (imagenElegida !== null) { /* Aca entra solo cuando se realizan cambios */
-        const reader = new FileReader();
-        reader.onloadend = () => { 
-          setPreview(reader.result);
-        }
-        reader.readAsDataURL(imagenElegida);
-      } else {  /* Aca entra cuando se renderiza por primera vez */
-        setPreview(sinFoto);
+    // FALLA CUANDO HAY IMAGEN DE PERFIL Y PREVIEW CARGADA. AL ELIMINAR PREVIEW BORRA FOTO CARGADA
+    if (imagenElegida !== null) { /* Aca entra solo cuando se realizan cambios */
+      const reader = new FileReader();
+      reader.onloadend = () => { 
+        setPreview(reader.result);
       }
+      reader.readAsDataURL(imagenElegida);
+    } else {  /* Aca entra cuando se renderiza por primera vez */
+      setPreview(sinFoto);
     }
-  // }
+  }
   
   const subirImagen = async (formData) => {    
     /* Subir a Cloudinary */
@@ -147,15 +146,15 @@ const Perfil = (props) => {
   }, [imagenElegida] );
 
   useEffect( () => { 
-    if (props.usuarioActivo.fotoUsuario !== null) 
-      setPreview(props.usuarioActivo.fotoUsuario);
+    if (imagenState !== null) {
+      setPreview(imagenState);
+    }
   }, [] );
 
  
-
   return (  
     <div className="perfil">
-      <h2>{props.usuarioActivo.nombreUsuario}</h2>
+      <h2>{props.usuarioActivo.nombreUsuario}</h2> 
       <h3>Activo desde: {props.usuarioActivo.fechaRegistro}</h3>
       
       <img 
@@ -164,7 +163,7 @@ const Perfil = (props) => {
         alt="Foto de perfil" 
       />
 
-      <form >
+      <form>
         <input 
           type="file" 
           onChange={manejoCambioImagen}
@@ -192,7 +191,17 @@ const Perfil = (props) => {
       {/* Mje poco comun por si se sube algo que no sea una imagen */}
       {malInput && <p className="incorrecto">Solo se aceptan imágenes PNG o JPG</p>}
       
-      <button className="boton-con-texto" onClick={manejoBotonVolver}>Guardar y volver</button>
+      <div className="botones-perfil">
+        <button className="boton-con-texto" onClick={manejoBotonVolver}>Guardar y volver</button>
+        <button className="boton-con-texto" onClick={manejoBotonCancelar}>Cancelar</button>
+      </div>
+
+      <div className="separador" />
+
+      <div className="datos-generales">
+        <h3>Cantidad de usuarios registrados: {props.datosGenerales.datosUsuarios}</h3>
+        <h3>Notas en uso actualmente: {props.datosGenerales.datosNotas}</h3>
+      </div> 
     </div>
   );
 }

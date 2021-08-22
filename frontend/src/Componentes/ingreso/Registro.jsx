@@ -40,7 +40,9 @@ const Registro = (props) => {
           await props.setUsuarioActivo(resultado.data);
           await setRegistro(registroDefault); /* Vuelve los campos a cero */
           await props.setInputIncorrecto(0);
-          // console.log(resultado.data);
+
+          await editarDatoUsuarios();
+
           await props.cambioRuta('notas');
         }
       } else 
@@ -48,6 +50,18 @@ const Registro = (props) => {
     }
     catch(error) {
       console.log('error J al registrar', error);
+    }
+  }
+
+  // SUMA 1 A LA CANTIDAD DE USUARIOS REGISTRADOS
+  const editarDatoUsuarios = async () => {
+    try {
+      const resultado = await axios.post('http://localhost:3030/datos/editarUsuarios');
+      console.log(resultado.data);
+      await props.traerDatosGenerales();
+
+    } catch (err) {
+      console.log('error J al editar dato general', err);
     }
   }
 

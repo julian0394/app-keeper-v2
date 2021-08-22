@@ -23,6 +23,7 @@ const AreaNotas = (props) => {
                 buscarNotasEnDB={props.buscarNotasEnDB}
                 toggleModoEdicion={props.toggleModoEdicion}
                 setNotaParaEditar={props.setNotaParaEditar}
+                editarDatoNota={props.editarDatoNota}
               />
             })}
           </ul>

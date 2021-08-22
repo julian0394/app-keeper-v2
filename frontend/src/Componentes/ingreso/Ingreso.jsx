@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Login from './Login';
 import Registro from './Registro';
 
@@ -19,6 +19,15 @@ const Ingreso = (props) => {
     }
     return true;
   };
+
+  const fetchDatos = async () => {
+    await props.traerDatosGenerales();
+  }
+
+
+  useEffect( () => {
+    fetchDatos();
+  } , [] );
 
   return (  
     <div className="contenedor-ingreso">
@@ -42,6 +51,7 @@ const Ingreso = (props) => {
             inputIncorrecto={inputIncorrecto}
             setInputIncorrecto={setInputIncorrecto}
             buscarPropiedadVacia={buscarPropiedadVacia}
+            traerDatosGenerales={props.traerDatosGenerales}
           />
       }
     </div>

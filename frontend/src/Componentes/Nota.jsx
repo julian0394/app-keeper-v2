@@ -10,6 +10,7 @@ const Nota = (props) => {
     try {
       const idBorrar = await props.id;
       await axios.post('http://localhost:3030/notas/borrar', {ID_nota: idBorrar});
+      await props.editarDatoNota('resta');
       
       await props.buscarNotasEnDB();
     } catch(error) {

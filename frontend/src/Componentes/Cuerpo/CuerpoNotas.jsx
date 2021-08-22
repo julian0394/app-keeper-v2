@@ -30,6 +30,23 @@ const CuerpoNotas = (props) => {
     } 
   }
 
+  // SUMA O RESTA 1 A LA CANTIDAD GLOBAL DE NOTAS DEPENDIENDO DESDE DONDE SE LLAME LA FUNCION
+  const editarDatoNota = async (operacion) => {
+    let op;
+    if (operacion === 'suma')
+      op = '+ 1';
+    else 
+      op = '- 1';
+    
+    try {
+      await axios.post('http://localhost:3030/datos/editarNotas', {operacion: op});
+      await props.traerDatosGenerales();
+
+    } catch (err) {
+      console.log('error J al editar dato general', err);
+    }
+  }
+
   // Evitar el desplazamiento vertical de la app (de fondo) durante el 'modo edicion'
   if(modoEdicion) 
     document.body.classList.add('sin-scroll')
@@ -43,6 +60,7 @@ const CuerpoNotas = (props) => {
         usuarioActivo={props.usuarioActivo} 
         listaNotas={props.listaNotas} 
         buscarNotasEnDB={buscarNotasEnDB}
+        editarDatoNota={editarDatoNota}
       />       
       <AreaNotas 
         listaNotas={props.listaNotas} 
@@ -51,9 +69,10 @@ const CuerpoNotas = (props) => {
         buscarNotasEnDB={buscarNotasEnDB}
 
         setNotaParaEditar={setNotaParaEditar}
-        // notaParaEditar={notaParaEditar}
         toggleModoEdicion={toggleModoEdicion}
         modoEdicion={modoEdicion}
+        traerDatosGenerales={props.traerDatosGenerales}
+        editarDatoNota={editarDatoNota}
       /> 
       {modoEdicion &&
         <Modal 
@@ -65,7 +84,6 @@ const CuerpoNotas = (props) => {
           usuarioActivo={props.usuarioActivo} 
           listaNotas={props.listaNotas} 
           buscarNotasEnDB={buscarNotasEnDB}
-        
         />
       }
     </div>

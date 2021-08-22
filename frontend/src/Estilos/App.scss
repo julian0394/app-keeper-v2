@@ -65,8 +65,6 @@ body {
 .body-edicion {
   margin: 0;
   padding: 0;
-  // width: 100vw;
-  // height: 100vh;
   background-color: #00000086;
   z-index: -1;
 }
@@ -93,7 +91,6 @@ body {
     -moz-border-radius: 6px;
     -ms-border-radius: 6px;
     -o-border-radius: 6px;  
-  // margin-bottom: 60px;
 
   &:hover {
     background-color: $color-amarilloHover;

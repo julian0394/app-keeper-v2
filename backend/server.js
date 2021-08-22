@@ -47,10 +47,10 @@ app.post('/login', (req, res) => {
       console.log('error J en server al logear', err);
     else {
       if(resultado.length > 0) {
-        console.log('ACCESO PERMITIDO');
+        // console.log('ACCESO PERMITIDO');
         res.send(resultado[0]);
       } else {
-        console.log('NONONO');
+        // console.log('NONONO');
         res.send(resultado); /* Envia un array vacio */
       }  
     }
@@ -68,7 +68,7 @@ app.post('/register', (req, res) => {
     db.query(query, (err, resultado) => {
       if(err){
         if (err.errno === 1062) {
-          console.log('ESE USUARIO YA EXISTE');  
+          // console.log('ESE USUARIO YA EXISTE');  
           res.send('existente');
         } else {
           console.log('ERROR AL INSERTAR', err);
@@ -101,7 +101,7 @@ app.post('/notas/nueva', (req, res) => {
         console.log('ERROR AL AGREGAR', err.errno);
       }
     else {
-      console.log('NOTA AGREGADA');
+      // console.log('NOTA AGREGADA');
       res.send(resultado);     
     }
   }); 
@@ -136,7 +136,7 @@ app.post('/notas/editar', (req, res) => {
         console.log('error server J al editar nota', err.errno);
       }
     else {
-      console.log('NOTA EDITADA');
+      // console.log('NOTA EDITADA');
       res.send(resultado);     
     }
   }); 
@@ -147,14 +147,14 @@ app.post('/notas/editar', (req, res) => {
 app.post('/notas/borrar', (req, res) => {
  const {ID_nota} = req.body;
  const query = borrarNotaEnBD(ID_nota);
- console.log('intentando borrar..');
+//  console.log('intentando borrar..');
  db.query(query, (err, resultado) => {
   if(err) {
     console.log('error J en server al borrar nota', err);
     res.send(err);
   } else {
     res.send(resultado);
-    console.log('borrado');
+    // console.log('borrado');
   }
  });
 });
@@ -164,7 +164,7 @@ app.post('/notas/borrar', (req, res) => {
 app.post('/usuario/cambiar-foto', (req, res) => {
   const {link, ID_usuario} = req.body; 
   const query = editarFotoPerfil(link, ID_usuario); 
-  console.log('cambiando foto');
+  // console.log('cambiando foto');
 
   db.query(query, (err, resultado) => {
     if(err) {
@@ -172,7 +172,7 @@ app.post('/usuario/cambiar-foto', (req, res) => {
       res.send(err);
     } else {
       res.send(resultado);
-      console.log('foto cambiada');
+      // console.log('foto cambiada');
     }
   });
 });
@@ -182,7 +182,7 @@ app.post('/usuario/cambiar-foto', (req, res) => {
 app.post('/usuario/borrar-foto', (req, res) => {
   const {ID_usuario} = req.body; 
   const query = borrarFotoPerfil(ID_usuario); 
-  console.log('borrando foto');
+  // console.log('borrando foto');
 
   db.query(query, (err, resultado) => {
     if(err) {
@@ -190,7 +190,7 @@ app.post('/usuario/borrar-foto', (req, res) => {
       res.send(err);
     } else {
       res.send(resultado);
-      console.log('foto borrada');
+      // console.log('foto borrada');
     }
   });
 });
@@ -200,7 +200,7 @@ app.post('/usuario/borrar-foto', (req, res) => {
 app.post('/usuario/buscar', (req,res) => {
   const {ID_usuario} = req.body
   const query = buscarUsuarioPorId(ID_usuario)
-  console.log('llamando usuario... again..')
+  // console.log('llamando usuario... again..')
 
   db.query(query, (err, resultado) => {
     if(err) {
@@ -208,10 +208,61 @@ app.post('/usuario/buscar', (req,res) => {
       res.send(err)
     } else {
       res.send(resultado)
-      console.log('usuario enviado al front');
+      // console.log('usuario enviado al front');
     }
   })
-})
+});
+
+
+/* Buscar datos generalos */
+app.get('/datos/traer', (req, res) => {
+  const query = BuscarDatos();
+  // console.log('buscando datos generales');
+  db.query(query, (err, resultado) => {
+    if (err) {
+      console.log('error J al buscar datos generales');
+      res.send(err);
+    } else {
+      // console.log('datos enviados al front');
+      res.send({
+        datosNotas: resultado[0].cantidad,
+        datosUsuarios: resultado[1].cantidad
+       }); 
+    }
+  });
+});
+
+
+/* Suma o resta 1 a la cantidad global de notas dependiendo el parametro */
+app.post('/datos/editarNotas', (req, res) => {
+  const {operacion} = req.body;
+  const query = editarDatos(operacion);
+
+  db.query(query, (err, resultado) => {
+    if (err) {
+      console.log('Error J al editar cantidad de notas', err);
+    } else {
+      // console.log('realizando cambio de dato nota');
+      res.send('Dato editado correctamente');
+    }
+  });
+});
+
+
+/* Suma 1 a la cantidad total de usuarios reigstrados */
+app.post('/datos/editarUsuarios', (req, res) => {
+  // console.log('Sumando 1 a datos de usuarios');
+  const query = editarUsuarios();
+
+  db.query(query, (err, resultado) => {
+    if (err) {
+      console.log('Error J al sumar 1 a datos de usuarios', err);
+    } else {
+      // console.log('Sumado un nuevo usuario');
+      res.send('Dato editado correctamente');
+    }
+  });
+});
 
 /*------------------------------------------------------------------------------------------------------------------------*/
 
@@ -285,7 +336,21 @@ const buscarUsuarioPorId = (ID_usuario) => {
   `
 }
 
+const BuscarDatos = () => {
+  return `SELECT * FROM datos_app;`
+}
 
+const editarDatos = (operacion) => {
+  return `
+    UPDATE datos_app SET cantidad = cantidad ${operacion} WHERE ID_dato = 1;
+  `
+}
+
+const editarUsuarios = () => {
+  return `
+    UPDATE datos_app SET cantidad = cantidad + 1 WHERE ID_dato = 2;
+  `
+} 
 
 // Funciones generales
 function calcularFecha() {
@@ -302,3 +367,4 @@ function calcularFecha() {
   const fechaHoy = [anio, mes, dia].join('-');
   return fechaHoy;
 }  
+
