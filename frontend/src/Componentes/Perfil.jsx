@@ -4,6 +4,10 @@ import sinFoto from '../usuario-sin-foto.png';
 // Iconos
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload, faTimes } from '@fortawesome/free-solid-svg-icons';
+// Material UI
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const axios = require('axios').default;
 
@@ -19,7 +23,7 @@ const Perfil = (props) => {
 
   // TRIGGER PARA MENSAJES DE ERROR DE IMAGEN
   const [malInput, setMalInput] = useState(false);
-  
+   
   const manejoBotonVolver = async (e) => {
     e.preventDefault();
    
@@ -33,7 +37,10 @@ const Perfil = (props) => {
       const nuevoUser = await reinstanciarUsuario();
   
       await props.setUsuarioActivo(nuevoUser);
+
       await props.cambioRuta('notas');
+
+      await props.setSubiendoImagen(0);
   
     } else if (preview === sinFoto) { /* Entra con/sin img - Sale sin img */
       await borrarImg();
@@ -92,7 +99,16 @@ const Perfil = (props) => {
     console.log('subiendo a cloudinary');
 
     try {
-      const res = await axios.post("https://api.cloudinary.com/v1_1/ronokoc/image/upload", formData);
+      const res = await axios.post(
+        "https://api.cloudinary.com/v1_1/ronokoc/image/upload", 
+        formData,
+        { onUploadProgress: progressEvent => {  /* Para palcular porcentaje de subida */
+            props.setSubiendoImagen( parseInt(
+              Math.round( (progressEvent.loaded * 100) / progressEvent.total)
+            ));
+          }
+        }
+      );
       console.log('listo cloudinary');
       const link = res.data.secure_url;
       return link;
@@ -150,15 +166,21 @@ const Perfil = (props) => {
       setPreview(imagenState);
     }
   }, [] );
-
  
   return (  
     <div className="perfil">
-      <h2>{props.usuarioActivo.nombreUsuario}</h2> 
+      {/* Solo visible cuando este subiendo foto a la web */}
+      { props.subiendoImagen === 0 && 
+        <Backdrop className="backdrop" open={true}>
+          <CircularProgress className="amarillo" />
+        </Backdrop>
+      } 
+      <h2 className={props.subiendoImagen ? "no seleccionable" : ""}>{props.usuarioActivo.nombreUsuario}</h2> 
       <h3>Activo desde: {props.usuarioActivo.fechaRegistro}</h3>
       
+    
       <img 
-        className="foto-usuario" 
+        className='foto-usuario no-seleccionable' 
         src={preview} 
         alt="Foto de perfil" 
       />
@@ -174,7 +196,7 @@ const Perfil = (props) => {
       </form>
       
       <div className="botones-foto">
-        <div className="tooltip" >
+        <div className="tooltip">
           <label className="label-foto" htmlFor="input-foto">
             <FontAwesomeIcon icon={faUpload} />
           </label>
@@ -188,7 +210,7 @@ const Perfil = (props) => {
         </div>
       </div>  
 
-      {/* Mje poco comun por si se sube algo que no sea una imagen */}
+      {/* Mje poco comun por si se sube voluntariamente algo que no sea una imagen */}
       {malInput && <p className="incorrecto">Solo se aceptan imágenes PNG o JPG</p>}
       
       <div className="botones-perfil">
@@ -205,5 +227,7 @@ const Perfil = (props) => {
     </div>
   );
 }
+
+
  
 export default Perfil;

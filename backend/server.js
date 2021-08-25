@@ -4,13 +4,17 @@ const cors = require('cors');
 
 
 // Usos de paquetes y middleware
-require('dotenv').config();
+require('dotenv').config(); /* Permite el uso de .env */
+
+const bcrypt = require('bcrypt'); /* Encriptacion de datos */
+const saltRounds = 10;
 
 const app = express();
 app.use(express.json());
-
 app.use(cors());
 
+
+// Configuracion base de datos
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -38,52 +42,87 @@ app.get('/', (req, res) => {
 });
 
 
+/*------------------------------------------------------------------------------------------------------------------------*/
+
+
 /* Login de usuario */
 app.post('/login', (req, res) => { 
+  /* 1ro recibo los datos ingresados en el input */
   const {nombreUsuario, passUsuario} = req.body;
-  const query = buscarUsuarioEnDB(nombreUsuario, passUsuario); 
-  db.query(query, (err, resultado) => {
-    if(err)
-      console.log('error J en server al logear', err);
-    else {
-      if(resultado.length > 0) {
-        // console.log('ACCESO PERMITIDO');
-        res.send(resultado[0]);
-      } else {
-        // console.log('NONONO');
-        res.send(resultado); /* Envia un array vacio */
-      }  
-    }
+
+  /* 2do traigo el usuario buscando segun el nombre ingresado y comparo (desencriptando) con el hash almacenado */
+    const query = buscarUsuarioPorNombre(nombreUsuario); 
+    db.query(query, async (err, resultado) => {
+      if(err)
+        console.log('error J en server al logear', err);
+      else {
+        if(resultado.length > 0) {  /* Encontró al usuario - Falta comparar contraseña */
+          console.log('USUARIO ENCONTRADO');
+          
+          const accesoCorrecto = await bcrypt.compare(passUsuario, resultado[0].passUsuario);
+                   
+          if (accesoCorrecto) { /* Comparacion de contraseñas */
+            console.log('ACCESO PERMITIDO');
+            res.send({  /* Traje TODO pero envio solo los datos deseados */
+              ID_usuario: resultado[0].ID_usuario,
+              nombreUsuario: resultado[0].nombreUsuario,
+              cantNotas: resultado[0].cantNotas,
+              fotoUsuario: resultado[0].fotoUsuario,
+              fechaRegistro: resultado[0].fechaRegistro,            
+            });
+          } else {
+            console.log('ACCESO DENEGADO');
+            res.send([]);
+          }          
+
+        } else {
+          console.log('NONONO');
+          res.send(resultado); /* Envia un array vacio */
+        }  
+      }
+    });
   }); 
-});
 
 
 /* Registro de nuevo usuario */
-app.post('/register', (req, res) => {
-    /* 2 PARTES */
-    const {nombreUsuario, mailUsuario, passUsuario} = req.body;
-    const query = insertarUsuarioEnBD(nombreUsuario, mailUsuario, passUsuario);
+app.post('/register', async (req, res) => {
+  const {nombreUsuario, mailUsuario, passUsuario} = req.body;
 
-    /* 1ro insterto usuario en BD */
-    db.query(query, (err, resultado) => {
-      if(err){
-        if (err.errno === 1062) {
-          // console.log('ESE USUARIO YA EXISTE');  
-          res.send('existente');
+  /* Encriptar mail y pass */
+  const mailHash = await bcrypt.hash(mailUsuario, saltRounds);
+  const passHash = await bcrypt.hash(passUsuario, saltRounds);
+  
+  const query = insertarUsuarioHashEnBD(nombreUsuario, mailHash, passHash);
+
+  /* Comprueba disponibilidad e inserta DATOS HASH en BD */
+  db.query(query, (err, resultado) => {
+    if(err){
+      if (err.errno === 1062) {
+        // console.log('ESE USUARIO YA EXISTE');  
+        res.send('existente');
+      } else {
+        console.log('ERROR AL REGISTRAR', err);
+        res.send('error');
+      }
+    }
+    else {
+      /* Tomo el ID que fue insertado en la tabla Hash */
+      /* Genera los datos por defecto con ese ID (foto = null, notas = 0 y fecha hoy) */
+    
+      const idInsertada = resultado.insertId;
+      
+      generarNuevoUsuario(idInsertada);
+      
+      /* Una vez insertado en ambas tablas busco usuario para devolver e instanciar en app */
+      db.query( buscarUsuarioPorID(idInsertada), (err2, resultado2) => {
+        if (err2) {
+          console.log('error J al buscar luego de registrar', err2);
         } else {
-          console.log('ERROR AL INSERTAR', err);
-          res.send('error'); 
-        }  
-      }
-      else {
-        /* 2do busco datos de usuario para instanciarlo en la App */
-        console.log("INSERTADO");
-        const idInsertada = resultado.insertId;
-        db.query( buscarEnDBConID(idInsertada), (err2, resultado2) => {
           res.send(resultado2[0]);
-        });
-      }
-    });
+        }
+      });
+    }
+  });
 });
 
   
@@ -98,7 +137,7 @@ app.post('/notas/nueva', (req, res) => {
         console.log('ERROR, TITULO MUY LARGO', err);
         res.send('error'); 
       } else {
-        console.log('ERROR AL AGREGAR', err.errno);
+        console.log('ERROR AL AGREGAR', err);
       }
     else {
       // console.log('NOTA AGREGADA');
@@ -106,7 +145,7 @@ app.post('/notas/nueva', (req, res) => {
     }
   }); 
 });
-
+ 
 
 /* Muestra las notas de un usuario logeado */
 app.post('/notas/mostrar', (req, res) => {
@@ -264,36 +303,67 @@ app.post('/datos/editarUsuarios', (req, res) => {
   });
 });
 
+
+app.post('/hashear', (req, res) => {
+  const { palabra } = req.body;
+  let hashJ;
+  console.log('palabra:', palabra);
+
+  bcrypt.hash(palabra, saltRounds, async (error, hash) => {
+    if (error) {
+      console.log(err);
+    } else {
+      hashJ = hash;
+      console.log('hash J:', hashJ);
+
+      const query = `INSERT INTO usuarios_hash VALUES (default, 'mail', 'pass');`;
+      db.query(query, async (err, resultado) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(resultado);
+        }
+      });  
+    }
+  });
+
+});
+
 /*------------------------------------------------------------------------------------------------------------------------*/
 
 // Queries
-const buscarUsuarioEnDB = (nombreUsuario, passUsuario) => {
+const buscarUsuarioEnDB = (nombreUsuario, passHash) => {
   return `
     SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
-    FROM usuarios 
-    WHERE nombreUsuario = '${nombreUsuario}' AND passUsuario = '${passUsuario}';
+    FROM vista_usuarios 
+    WHERE nombreUsuario = '${nombreUsuario}' AND passHash = '${passHash}';
   `;  
 }
 
-const insertarUsuarioEnBD = (nombreUsuario, mailUsuario, passUsuario) => {
+const insertarUsuarioHashEnBD = (nombreUsuario, mailUsuario, passUsuario) => {
   return`
-    INSERT INTO Usuarios 
-    VALUES (null, '${nombreUsuario}', '${mailUsuario}', '${passUsuario}', '${calcularFecha()}', 0, null);
+    INSERT INTO usuarios_hash VALUES (null, '${nombreUsuario}', '${mailUsuario}', '${passUsuario}');
   `;
 }
 
-const buscarEnDBConID = (id) => { /* Retorna usuario para instanciarlo en la app */
+const buscarUsuarioPorID = (id) => { /* Busca en view y retorna usuario para instanciarlo en la app */
   return `
     SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
-    FROM Usuarios 
+    FROM vista_usuarios
     WHERE ID_usuario = ${id};
+  `;  
+}
+
+const buscarUsuarioPorNombre = (nombreUsuario) => { /* Busca en view y retorna usuario para instanciarlo en la app */
+  return `
+    SELECT * FROM vista_usuarios WHERE nombreUsuario = '${nombreUsuario}';
   `;  
 }
 
 const insertarNotaEnBD = (tituloNota, cuerpoNota, ID_usuario) => {
   return`
     INSERT INTO Notas 
-    VALUES (null, '${tituloNota}', '${cuerpoNota}', '${ID_usuario}');
+    VALUES (null, '${tituloNota}', '${cuerpoNota}', ${ID_usuario});
   `;
 }
 
@@ -332,7 +402,7 @@ const borrarFotoPerfil = (ID_usuario) => {
 const buscarUsuarioPorId = (ID_usuario) => {
   return `
   SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
-  FROM usuarios WHERE ID_usuario = ${ID_usuario};
+  FROM vista_usuarios WHERE ID_usuario = ${ID_usuario};
   `
 }
 
@@ -352,6 +422,10 @@ const editarUsuarios = () => {
   `
 } 
 
+
+/*------------------------------------------------------------------------------------------------------------------------*/
+
+
 // Funciones generales
 function calcularFecha() {
   let fecha = new Date(),
@@ -368,3 +442,14 @@ function calcularFecha() {
   return fechaHoy;
 }  
 
+const generarNuevoUsuario = (idUsuario) => {
+  const query = `INSERT INTO Usuarios VALUES (${idUsuario}, '${calcularFecha()}', 0, null);`
+  db.query(query, (err, respuesta) => {
+    if (err) {
+      console.log('error J al generar usuario generico', err);
+    } 
+    // else {
+    //   console.log('usuario generico creado correctamente');
+    // }
+  });
+}

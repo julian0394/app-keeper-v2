@@ -1,23 +1,14 @@
-import React, { /*useState*/ } from 'react';
-// import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLightbulb, faInfoCircle, faSignOutAlt /*, faCaretDown*/ } from '@fortawesome/free-solid-svg-icons';
 import sinFoto from '../usuario-sin-foto.png';
 
 const Header = (props) => {
     
-  // STATE PARA MANEJAR LA APERTURA DEL MENU DESPLEGABLE
-  // const [menuAbierto, setMenuAbierto] = useState(false);
-
-  // const abrirMenu = () => {
-  //   setMenuAbierto(!menuAbierto);
-  // }
-
   const manejoCierreSesion = evento => {
     evento.preventDefault();
     props.setUsuarioActivo({});
     props.setListaNotas([]);
-    // setMenuAbierto(false);
     props.cambioRuta('login');
   }
 
@@ -27,7 +18,6 @@ const Header = (props) => {
 
   return (
     <div className="zona-header">
-      {/* VERSION ANTERIOR EN notas.js */}
       <header>
         <h1 className="no-seleccionable"> <FontAwesomeIcon className="logo" icon={faLightbulb} /> Juper </h1>
         { (props.ruta === 'notas' || props.ruta === 'perfil') && 
@@ -35,7 +25,7 @@ const Header = (props) => {
             
             <div className="tooltip">
               <img 
-                className="foto-usuario no-seleccionable" 
+                className={`foto-usuario no-seleccionable ${props.subiendoImagen && 'sin-evento'}`} 
                 onClick={manejoBotonPerfil} 
                 src={props.usuarioActivo.fotoUsuario === null ? sinFoto : props.usuarioActivo.fotoUsuario} 
                 alt="Foto gris generica" 
@@ -44,7 +34,11 @@ const Header = (props) => {
             </div>
               
             <div className="tooltip">
-              <FontAwesomeIcon className="item" icon={faInfoCircle} onClick={() => console.log('info')} />
+              <FontAwesomeIcon 
+                className="item" 
+                icon={faInfoCircle} 
+                onClick={ () => alert('Desarrollado por Juli Pérez - Github: julian0394') } 
+              />
               <p className="texto-tooltip">Info</p>
             </div>
             

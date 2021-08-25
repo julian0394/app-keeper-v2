@@ -25,6 +25,11 @@ const App = () => {
   //STATE DE DATOS GENERALES
   const [datosGenerales, setDatosGenerales] = useState({});
 
+  // STATE PARA CONTROLAR EL PROGRESO DE SUBIDA DE FOTO A WEB
+    //  Bloquea toda la app, por eso está acá
+  const [subiendoImagen, setSubiendoImagen] = useState(0);
+
+  
   const traerDatosGenerales = async () => {
     try {
       const datos = await axios.get('http://localhost:3030/datos/traer');
@@ -36,12 +41,13 @@ const App = () => {
  
   return (
     <>
-      <Header 
-        ruta={ruta} 
-        cambioRuta={cambioRuta} 
+      <Header
+        ruta={ruta}
+        cambioRuta={cambioRuta}
         usuarioActivo={usuarioActivo}
-        setUsuarioActivo={setUsuarioActivo} 
-        setListaNotas={setListaNotas} 
+        setUsuarioActivo={setUsuarioActivo}
+        setListaNotas={setListaNotas}
+        subiendoImagen={subiendoImagen}
       /> 
       <div className="div-body"> 
         {ruta === 'perfil' 
@@ -50,7 +56,9 @@ const App = () => {
               cambioRuta={cambioRuta}
               usuarioActivo={usuarioActivo}
               setUsuarioActivo={setUsuarioActivo}
-              datosGenerales={datosGenerales} 
+              datosGenerales={datosGenerales}
+              subiendoImagen={subiendoImagen}
+              setSubiendoImagen={setSubiendoImagen}
             />
           :
             (ruta === 'login' || ruta === 'registro') 

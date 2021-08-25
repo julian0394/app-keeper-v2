@@ -88,7 +88,7 @@ const Login = (props) => {
   
       <p className="registroEInicio">No tienes una cuenta? 
         <a href="./register" onClick={ (evento) => props.alCambiarRuta(evento, 'registro')}>Registrate!</a>
-      </p>            
+      </p>           
     </>
   )
 }

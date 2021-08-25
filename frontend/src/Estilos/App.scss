@@ -35,7 +35,7 @@
 
 body {
   background: $color-fondoGris;
-  padding: 0 16px;
+  padding: 0 1rem;
 }
 
 
@@ -146,6 +146,16 @@ body {
   font-weight: 500;
   color: $color-textoError;
 }
+
+.sin-evento {
+  pointer-events: none;
+  cursor: default;
+}
+
+.amarillo { /* Para el icono de carga al subir imagen */
+  color: $color-amarilloPrincipal;
+}
+
 
 @import './areaNuevaNota';
 @import './footer';

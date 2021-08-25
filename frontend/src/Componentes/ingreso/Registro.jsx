@@ -31,7 +31,7 @@ const Registro = (props) => {
         const resultado = await axios.post('http://localhost:3030/register', {
           nombreUsuario: registro.usuario.trim(),
           mailUsuario: registro.email.trim(),
-          passUsuario: registro.password,
+          passUsuario: registro.password.trim(),
         });
 
         if(resultado.data === 'existente')
@@ -56,8 +56,7 @@ const Registro = (props) => {
   // SUMA 1 A LA CANTIDAD DE USUARIOS REGISTRADOS
   const editarDatoUsuarios = async () => {
     try {
-      const resultado = await axios.post('http://localhost:3030/datos/editarUsuarios');
-      console.log(resultado.data);
+      await axios.post('http://localhost:3030/datos/editarUsuarios');
       await props.traerDatosGenerales();
 
     } catch (err) {

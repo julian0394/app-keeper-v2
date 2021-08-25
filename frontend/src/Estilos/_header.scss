@@ -48,6 +48,14 @@ header {
       color: #242424;
     }
   }  
+
+  .tooltip { // Solo para que se sobreponga al modo de 'carga de imagen'
+    .texto-tooltip {
+      z-index: 99;
+    }
+  }
+
+  
 }
 
   .menu {

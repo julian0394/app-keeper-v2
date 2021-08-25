@@ -2,10 +2,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
 
   h2, h3 {
     margin-bottom: 20px;
+  }
+
+  h2 {
+    padding-top: 60px;
   }
 
   p {
@@ -33,6 +36,7 @@
     width:  200px;
     height: 200px;
     object-fit: cover;
+    margin-top: 2rem;
   }
 
   .botones-foto {
@@ -107,6 +111,9 @@
     font-weight: 500;
   }
 
+  .backdrop {
+    z-index: 10;
+  }
 }
 
 .separador {
@@ -115,7 +122,3 @@
   border-bottom: 2px solid lightgray;
 }
 
-.anulado {
-  background-color: cornsilk;
-  cursor: default;
-}
