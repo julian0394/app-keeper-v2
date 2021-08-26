@@ -19,13 +19,13 @@ const Header = (props) => {
   return (
     <div className="zona-header">
       <header>
-        <h1 className="no-seleccionable"> <FontAwesomeIcon className="logo" icon={faLightbulb} /> Juper </h1>
+        <h1 className="no-seleccionable"> <FontAwesomeIcon className="logo" icon={faLightbulb} /> Douge Notes </h1>
         { (props.ruta === 'notas' || props.ruta === 'perfil') && 
           <div className="usuario-header menu">
             
             <div className="tooltip">
               <img 
-                className={`foto-usuario no-seleccionable ${props.subiendoImagen && 'sin-evento'}`} 
+                className="foto-usuario no-seleccionable" 
                 onClick={manejoBotonPerfil} 
                 src={props.usuarioActivo.fotoUsuario === null ? sinFoto : props.usuarioActivo.fotoUsuario} 
                 alt="Foto gris generica" 

@@ -24,11 +24,6 @@ const App = () => {
 
   //STATE DE DATOS GENERALES
   const [datosGenerales, setDatosGenerales] = useState({});
-
-  // STATE PARA CONTROLAR EL PROGRESO DE SUBIDA DE FOTO A WEB
-    //  Bloquea toda la app, por eso está acá
-  const [subiendoImagen, setSubiendoImagen] = useState(0);
-
   
   const traerDatosGenerales = async () => {
     try {
@@ -47,7 +42,6 @@ const App = () => {
         usuarioActivo={usuarioActivo}
         setUsuarioActivo={setUsuarioActivo}
         setListaNotas={setListaNotas}
-        subiendoImagen={subiendoImagen}
       /> 
       <div className="div-body"> 
         {ruta === 'perfil' 
@@ -57,8 +51,6 @@ const App = () => {
               usuarioActivo={usuarioActivo}
               setUsuarioActivo={setUsuarioActivo}
               datosGenerales={datosGenerales}
-              subiendoImagen={subiendoImagen}
-              setSubiendoImagen={setSubiendoImagen}
             />
           :
             (ruta === 'login' || ruta === 'registro') 

@@ -23,6 +23,9 @@ const Perfil = (props) => {
 
   // TRIGGER PARA MENSAJES DE ERROR DE IMAGEN
   const [malInput, setMalInput] = useState(false);
+
+  // STATE PARA CONTROLAR EL PROGRESO DE SUBIDA DE FOTO A WEB
+  const [subiendoImagen, setSubiendoImagen] = useState(0);
    
   const manejoBotonVolver = async (e) => {
     e.preventDefault();
@@ -40,7 +43,7 @@ const Perfil = (props) => {
 
       await props.cambioRuta('notas');
 
-      await props.setSubiendoImagen(0);
+      await setSubiendoImagen(0);
   
     } else if (preview === sinFoto) { /* Entra con/sin img - Sale sin img */
       await borrarImg();
@@ -103,7 +106,7 @@ const Perfil = (props) => {
         "https://api.cloudinary.com/v1_1/ronokoc/image/upload", 
         formData,
         { onUploadProgress: progressEvent => {  /* Para palcular porcentaje de subida */
-            props.setSubiendoImagen( parseInt(
+            setSubiendoImagen( parseInt(
               Math.round( (progressEvent.loaded * 100) / progressEvent.total)
             ));
           }
@@ -167,15 +170,15 @@ const Perfil = (props) => {
     }
   }, [] );
  
-  return (  
+  return (
     <div className="perfil">
       {/* Solo visible cuando este subiendo foto a la web */}
-      { props.subiendoImagen === 0 && 
+      { subiendoImagen > 0 && 
         <Backdrop className="backdrop" open={true}>
-          <CircularProgress className="amarillo" />
+          <CircularProgress size="5rem" style={{color: "#f0b000"}} />
         </Backdrop>
       } 
-      <h2 className={props.subiendoImagen ? "no seleccionable" : ""}>{props.usuarioActivo.nombreUsuario}</h2> 
+      <h2 className={subiendoImagen ? "no seleccionable" : ""}>{props.usuarioActivo.nombreUsuario}</h2> 
       <h3>Activo desde: {props.usuarioActivo.fechaRegistro}</h3>
       
     
@@ -227,7 +230,5 @@ const Perfil = (props) => {
     </div>
   );
 }
-
-
  
 export default Perfil;
