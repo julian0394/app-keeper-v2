@@ -23,7 +23,7 @@ const Modal = (props) => {
     });
   }
 
-  const manejoClickEditar = async (event) => {
+  const manejoClickTerminar = async (event) => {
     event.preventDefault();
     try {
       const notaEditada = { 
@@ -34,9 +34,8 @@ const Modal = (props) => {
       await axios.post('http://localhost:3030/notas/editar', notaEditada);
 
       await props.buscarNotasEnDB();
-
       await props.toggleModoEdicion();
-      /* falta validar inputs vacias (mas adelante con dependencias) */
+
     } catch (error) {
       console.log('Error J al editar nota', error);
     }
@@ -46,16 +45,14 @@ const Modal = (props) => {
     <div className="modal">
       <div onClick={props.toggleModoEdicion} className="overlay" />
       <div className="contenido-modal">
-        <h2>Editar nota :)</h2>
+        <h2>Editar nota</h2>
 
         <FontAwesomeIcon className="btn-cerrar-modal" icon={faTimes} onClick={props.toggleModoEdicion} />
-        {/* <button className="btn-cerrar-modal" onClick={props.toggleModoEdicion}> X </button> */}
 
         <form className="crear-nota">
           <input 
             onChange={manejoCambioInput}
             value={input.titulo}
-            defaultValue={props.notaParaEditar.tituloNota}
             className="tituloNuevaNota" 
             name="titulo" 
             placeholder="Título"
@@ -63,12 +60,11 @@ const Modal = (props) => {
           <textarea 
             onChange={manejoCambioInput}
             value={input.contenido}
-            defaultValue={props.notaParaEditar.cuerpoNota}
             name="contenido" 
             placeholder="Escriba una nota..." 
             rows="3"
           />
-          <button className="btn-agregar no-seleccionable" type="submit" onClick={manejoClickEditar}>
+          <button className="btn-agregar no-seleccionable" type="submit" onClick={manejoClickTerminar}>
             <FontAwesomeIcon className="btn-agregar" icon={faCheck} />
           </button>
         </form>

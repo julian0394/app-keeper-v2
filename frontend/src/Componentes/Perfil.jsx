@@ -31,20 +31,20 @@ const Perfil = (props) => {
     e.preventDefault();
    
     if (imagenElegida !== null) {  /* Entra con/sin img - Sale con nueva img */
-      const fd = new FormData();
-      fd.append('file', imagenElegida);
-      fd.append('upload_preset', 'ar1mfxjp');
+      const formData = new FormData();
+      formData.append('file', imagenElegida);
+      formData.append('upload_preset', 'ar1mfxjp');
   
-      const linkImg = await subirImagen(fd);
+      const linkImg = await subirImagen(formData);
       await imagenABase(linkImg);
       const nuevoUser = await reinstanciarUsuario();
   
       await props.setUsuarioActivo(nuevoUser);
 
-      await props.cambioRuta('notas');
+      setSubiendoImagen(0);
 
-      await setSubiendoImagen(0);
-  
+      await props.cambioRuta('notas');
+        
     } else if (preview === sinFoto) { /* Entra con/sin img - Sale sin img */
       await borrarImg();
       const nuevoUser = await reinstanciarUsuario();
@@ -66,7 +66,6 @@ const Perfil = (props) => {
       const foto = event.target.files[0] /*|| event.dataTransfer.files[0];*/ // En este caso con un solo input, se toma el primer elemento del array
 
       if (foto.type.substr(0, 5) === 'image') { // (foto.type === 'image/jpeg' || foto.type === 'image/png') 
-        console.log('type ok');
         setMalInput(false);
         setImagenElegida(foto);
       }

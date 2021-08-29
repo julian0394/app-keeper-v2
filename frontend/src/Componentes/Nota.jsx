@@ -37,9 +37,8 @@ const Nota = (props) => {
           <FontAwesomeIcon className="btn-nota btn-borrar" icon={faTrash} />
         <p className="texto-tooltip">Borrar</p>
         </button>
-      </div>
-        
-        
+      </div> 
+                
         <div className="tooltip">
           <button onClick={manejoBotonEditar}>
             <FontAwesomeIcon className="btn-nota btn-editar" icon={faEdit} />

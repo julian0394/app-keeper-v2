@@ -98,7 +98,7 @@ body {
 .tooltip {
   position: relative;
   display: inline-block;
-  
+   
   .texto-tooltip {
     visibility: hidden;
     background-color: $color-fondoGrisTooltip;
@@ -117,8 +117,6 @@ body {
     
     // opacity: 0;
     // animation: popup 1s linear 1s backwards;
-
-    // DUDAS DE ANIMACION PARA POP-UP
   }
   
   &:hover .texto-tooltip {

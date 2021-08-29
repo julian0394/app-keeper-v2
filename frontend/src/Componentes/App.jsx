@@ -53,7 +53,7 @@ const App = () => {
               datosGenerales={datosGenerales}
             />
           :
-            (ruta === 'login' || ruta === 'registro') 
+            (ruta === 'login' || ruta === 'registro')
               ?
                 <Ingreso 
                   ruta={ruta} 
@@ -68,7 +68,7 @@ const App = () => {
                   usuarioActivo={usuarioActivo}
                   listaNotas={listaNotas} 
                   setListaNotas={setListaNotas}
-                  traerDatosGenerales={traerDatosGenerales}
+                  traerDatosGenerales={traerDatosGenerales} 
                 />
         } 
       </div>  

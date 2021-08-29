@@ -77,12 +77,11 @@ const CuerpoNotas = (props) => {
       {modoEdicion &&
         <Modal 
           toggleModoEdicion={toggleModoEdicion}
-          modoEdicion={modoEdicion}  
           notaParaEditar={notaParaEditar}
           
           setListaNotas={props.setListaNotas}
-          usuarioActivo={props.usuarioActivo} 
-          listaNotas={props.listaNotas} 
+          usuarioActivo={props.usuarioActivo}
+          listaNotas={props.listaNotas}
           buscarNotasEnDB={buscarNotasEnDB}
         />
       }

@@ -15,12 +15,23 @@ app.use(cors());
 
 
 // Configuracion base de datos
+
+/* DB local */
+// const db = mysql.createConnection({
+//   host: process.env.LOCAL_DB_HOST,
+//   user: process.env.LOCAL_DB_USER,
+//   password:process.env.LOCAL_BD_PASS,
+//   database: process.env.LOCAL_DB_DATABASE, 
+// });
+
+/* DB Nube */
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
-  password:process.env.BD_PASS,
+  password: process.env.BD_PASS,
   database: process.env.DB_DATABASE, 
 });
+
 
 db.connect( err => {
   if (err) {
@@ -40,7 +51,7 @@ app.listen( process.env.PORT || 3030, () => { /* process.env.PORT es para el ser
 app.get('/', (req, res) => {
   res.send('DB de Juli!')
 });
-
+ 
 
 /*------------------------------------------------------------------------------------------------------------------------*/
 
@@ -153,7 +164,7 @@ app.post('/notas/mostrar', (req, res) => {
   const query = buscarNotasEnDB(ID_usuario); 
   db.query(query, (err, resultado) => {
     if(err) {
-      console.log('error J en server al mostrar notas', err);
+      console.log('error J en server al mostrar notas -', err);
       res.send(err);
     } else 
       res.send(resultado);
@@ -248,7 +259,7 @@ app.post('/usuario/buscar', (req,res) => {
     } else {
       res.send(resultado)
       // console.log('usuario enviado al front');
-    }
+    } 
   })
 });
 
@@ -344,7 +355,7 @@ const insertarUsuarioHashEnBD = (nombreUsuario, mailUsuario, passUsuario) => {
   return`
     INSERT INTO usuarios_hash VALUES (null, '${nombreUsuario}', '${mailUsuario}', '${passUsuario}');
   `;
-}
+} 
 
 const buscarUsuarioPorID = (id) => { /* Busca en view y retorna usuario para instanciarlo en la app */
   return `
@@ -362,14 +373,14 @@ const buscarUsuarioPorNombre = (nombreUsuario) => { /* Busca en view y retorna u
 
 const insertarNotaEnBD = (tituloNota, cuerpoNota, ID_usuario) => {
   return`
-    INSERT INTO Notas 
+    INSERT INTO notas 
     VALUES (null, '${tituloNota}', '${cuerpoNota}', ${ID_usuario});
   `;
 }
 
 const buscarNotasEnDB = (ID_usuario) => {
   return`
-    SELECT * FROM Notas WHERE ID_usuario = ${ID_usuario};
+    SELECT * FROM notas WHERE ID_usuario = ${ID_usuario};
   `;
 }
 
@@ -443,7 +454,7 @@ function calcularFecha() {
 }  
 
 const generarNuevoUsuario = (idUsuario) => {
-  const query = `INSERT INTO Usuarios VALUES (${idUsuario}, '${calcularFecha()}', 0, null);`
+  const query = `INSERT INTO usuarios VALUES (${idUsuario}, '${calcularFecha()}', 0, null);`
   db.query(query, (err, respuesta) => {
     if (err) {
       console.log('error J al generar usuario generico', err);
@@ -452,4 +463,4 @@ const generarNuevoUsuario = (idUsuario) => {
     //   console.log('usuario generico creado correctamente');
     // }
   });
-}
+} 

@@ -13,7 +13,7 @@ const Header = (props) => {
   const [cuentaEG, setCuentaEG] = useState(0);
   
   const menejoEasterEgg = () => {
-    if (cuentaEG < 10) {
+    if (cuentaEG < 5) {
       setCuentaEG(cuentaEG + 1); 
     } else {
       resetEasterEgg();
@@ -79,7 +79,7 @@ const Header = (props) => {
           }        
         </header>
       </div>
-      { cuentaEG >= 10 &&
+      { cuentaEG >= 5 &&
         <Backdrop className="easter-egg backdrop" open={true}>
           <img className="easter-egg" src={dogeImg} alt="Imagen del perro mas lindo" />
         </Backdrop>
