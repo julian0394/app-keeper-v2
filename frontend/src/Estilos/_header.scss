@@ -8,11 +8,23 @@ header {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
   cursor: default;
 
-  h1 {
-    color: $color-fondoBlanco;
-    font-family: "McLaren", cursive;
-    font-weight: 200;
+  .zona-titulo {
+    display: flex;
+    align-items: center;
+    padding-left: 1.5rem;
+    h1 {
+      color: $color-fondoBlanco;
+      font-family: "McLaren", cursive;
+      font-weight: 200;
+      margin-left: 1rem;
+    }
+
+    img {
+      width: 3rem;
+      cursor: help;
+    }
   }
+  
 
   .item {
     display: block;
@@ -24,11 +36,6 @@ header {
     &:hover {
       text-decoration: underline;
     }
-  }
-
-  .logo {
-    font-size: 1.7rem;
-    margin-right: 10px;
   }
 
   .usuario-header {
@@ -78,3 +85,8 @@ header {
       font-size: 1.8rem; 
     }
   }
+
+.easter-egg {
+  width: 100%;
+  height: 100%;
+}

@@ -47,7 +47,7 @@ const CuerpoNotas = (props) => {
     }
   }
 
-  // Evitar el desplazamiento vertical de la app (de fondo) durante el 'modo edicion'
+  // Evita el desplazamiento vertical de la app (de fondo) durante el 'modo edicion'
   if(modoEdicion) 
     document.body.classList.add('sin-scroll')
   else 

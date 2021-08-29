@@ -38,20 +38,6 @@ body {
   padding: 0 1rem;
 }
 
-
-// Areas de notas (con y sin)
-.div-sin-notas {
-  text-align: center;
-  margin-top: 25vh;
-  color: gray;
-  cursor: default;
-}
-
-.lista-notas {
-  display: flex;
-  margin-top: 6rem;
-}
-
 // Generales
 .no-seleccionable {
   user-select: none;
@@ -158,6 +144,7 @@ body {
 
 
 @import './areaNuevaNota';
+@import './cuerpoNotas';
 @import './footer';
 @import './header';
 @import './ingreso';
