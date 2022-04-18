@@ -13,35 +13,42 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+function validarLargoNota(req, res, next) {
+  console.log('entando a middleware de validacion');
 
-// Configuracion base de datos
+  if (req.body.cuerpoNota.length > 40) {
+    res.status(401).send('error-largo');
+  } else {
+    next();
+  }
+}
 
-/* DB local */
+// Configuracion base de datos en nube
 // const db = mysql.createConnection({
-//   host: process.env.LOCAL_DB_HOST,
-//   user: process.env.LOCAL_DB_USER,
-//   password:process.env.LOCAL_BD_PASS,
-//   database: process.env.LOCAL_DB_DATABASE, 
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   password: process.env.BD_PASS,
+//   database: process.env.DB_DATABASE, 
 // });
 
-/* DB Nube */
-const db = mysql.createConnection({
+const db  = mysql.createPool({
+  connectionLimit : 10,
+  acquireTimeout  : 10000,
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.BD_PASS,
   database: process.env.DB_DATABASE, 
 });
 
-
-db.connect( err => {
-  if (err) {
-    console.error('Error al conectarse a BD: ' + err.stack);
-    return;
-  }
-  console.log('Conectado a BD correctamente');
-});
+// Conexion a la BD
+// db.connect( err => {
+//   if (err) {
+//     console.error('Error al conectarse a BD: ' + err.stack);
+//     return;
+//   }
+//   console.log('Conectado a BD correctamente');
+// });
  
-
 // Funciones server / rutas 
 app.listen( process.env.PORT || 3030, () => { /* process.env.PORT es para el servidor de heroku una vez subido */
   console.log("Servidor -J- iniciado");
@@ -78,8 +85,8 @@ app.post('/login', (req, res) => {
               ID_usuario: resultado[0].ID_usuario,
               nombreUsuario: resultado[0].nombreUsuario,
               cantNotas: resultado[0].cantNotas,
-              fotoUsuario: resultado[0].fotoUsuario,
-              fechaRegistro: resultado[0].fechaRegistro,            
+              imagenUsuario: resultado[0].imagenUsuario,
+              fechaRegistro: resultado[0].fechaRegistro,
             });
           } else {
             console.log('ACCESO DENEGADO');
@@ -119,7 +126,6 @@ app.post('/register', async (req, res) => {
     else {
       /* Tomo el ID que fue insertado en la tabla Hash */
       /* Genera los datos por defecto con ese ID (foto = null, notas = 0 y fecha hoy) */
-    
       const idInsertada = resultado.insertId;
       
       generarNuevoUsuario(idInsertada);
@@ -138,23 +144,23 @@ app.post('/register', async (req, res) => {
 
   
 /* Agregar nueva nota */
-app.post('/notas/nueva', (req, res) => {
+app.post('/notas/nueva', validarLargoNota, (req, res) => {  /* validarLargoNota es middleware */
   const {tituloNota, cuerpoNota, ID_usuario} = req.body;
 
-  const query = insertarNotaEnBD(tituloNota, cuerpoNota, ID_usuario); 
+  const query = insertarNotaEnBD(tituloNota, cuerpoNota, ID_usuario);
   db.query(query, (err, resultado) => {
     if(err)
       if (err.errno === 1406) {
-        console.log('ERROR, TITULO MUY LARGO', err);
+        console.log('ERROR, TITULO MUY LARGO en DB', err);
         res.send('error'); 
       } else {
         console.log('ERROR AL AGREGAR', err);
       }
     else {
-      // console.log('NOTA AGREGADA');
+      
       res.send(resultado);     
     }
-  }); 
+  });
 });
  
 
@@ -266,7 +272,7 @@ app.post('/usuario/buscar', (req,res) => {
 
 /* Buscar datos generalos */
 app.get('/datos/traer', (req, res) => {
-  const query = BuscarDatos();
+  const query = buscarDatos();
   // console.log('buscando datos generales');
   db.query(query, (err, resultado) => {
     if (err) {
@@ -345,48 +351,51 @@ app.post('/hashear', (req, res) => {
 // Queries
 const buscarUsuarioEnDB = (nombreUsuario, passHash) => {
   return `
-    SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
-    FROM vista_usuarios 
+    SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, imagenUsuario 
+    FROM Vista_usuarios 
     WHERE nombreUsuario = '${nombreUsuario}' AND passHash = '${passHash}';
-  `;  
+  `;
 }
 
 const insertarUsuarioHashEnBD = (nombreUsuario, mailUsuario, passUsuario) => {
+  // return`
+  //   INSERT INTO Usuarios_hash VALUES (null, '${nombreUsuario}', '${mailUsuario}', '${passUsuario}');
+  // `;
   return`
-    INSERT INTO usuarios_hash VALUES (null, '${nombreUsuario}', '${mailUsuario}', '${passUsuario}');
+    INSERT INTO Datos_usuario VALUES (null, '${nombreUsuario}', '${mailUsuario}', '${passUsuario}');
   `;
 } 
 
 const buscarUsuarioPorID = (id) => { /* Busca en view y retorna usuario para instanciarlo en la app */
   return `
-    SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
-    FROM vista_usuarios
+    SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, imagenUsuario 
+    FROM Vista_usuarios
     WHERE ID_usuario = ${id};
   `;  
 }
 
 const buscarUsuarioPorNombre = (nombreUsuario) => { /* Busca en view y retorna usuario para instanciarlo en la app */
   return `
-    SELECT * FROM vista_usuarios WHERE nombreUsuario = '${nombreUsuario}';
+    SELECT * FROM Vista_usuarios WHERE nombreUsuario = '${nombreUsuario}';
   `;  
 }
 
 const insertarNotaEnBD = (tituloNota, cuerpoNota, ID_usuario) => {
   return`
-    INSERT INTO notas 
+    INSERT INTO Notas 
     VALUES (null, '${tituloNota}', '${cuerpoNota}', ${ID_usuario});
   `;
 }
 
 const buscarNotasEnDB = (ID_usuario) => {
   return`
-    SELECT * FROM notas WHERE ID_usuario = ${ID_usuario};
+    SELECT * FROM Notas WHERE ID_usuario = ${ID_usuario};
   `;
 }
 
 const editarNota = (tituloNota, cuerpoNota, id) => {
   return `
-    UPDATE notas 
+    UPDATE Notas 
     SET tituloNota = '${tituloNota}', cuerpoNota = '${cuerpoNota}'
     WHERE ID_nota = ${id};
   `;  
@@ -394,42 +403,42 @@ const editarNota = (tituloNota, cuerpoNota, id) => {
 
 const borrarNotaEnBD = (ID_nota) => {
   return`
-    DELETE FROM notas WHERE ID_nota = ${ID_nota};
+    DELETE FROM Notas WHERE ID_nota = ${ID_nota};
   `;
 }
 
 const editarFotoPerfil = (link, ID_usuario) => {
   return `
-    UPDATE usuarios SET fotoUsuario = '${link}' WHERE ID_usuario = ${ID_usuario};
+    UPDATE Usuarios SET imagenUsuario = '${link}' WHERE ID_usuario = ${ID_usuario};
   `
 }
 
 const borrarFotoPerfil = (ID_usuario) => {
   return `
-    UPDATE usuarios SET fotoUsuario = null WHERE ID_usuario = ${ID_usuario};
+    UPDATE Usuarios SET imagenUsuario = null WHERE ID_usuario = ${ID_usuario};
   `
 }
 
 const buscarUsuarioPorId = (ID_usuario) => {
   return `
-  SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, fotoUsuario 
-  FROM vista_usuarios WHERE ID_usuario = ${ID_usuario};
+  SELECT ID_usuario, nombreUsuario, cantNotas, fechaRegistro, imagenUsuario 
+  FROM Vista_usuarios WHERE ID_usuario = ${ID_usuario};
   `
 }
 
-const BuscarDatos = () => {
-  return `SELECT * FROM datos_app;`
+const buscarDatos = () => {
+  return `SELECT * FROM Datos_app;`
 }
 
 const editarDatos = (operacion) => {
   return `
-    UPDATE datos_app SET cantidad = cantidad ${operacion} WHERE ID_dato = 1;
+    UPDATE Datos_app SET cantidad = cantidad ${operacion} WHERE ID_dato = 1;
   `
 }
 
 const editarUsuarios = () => {
   return `
-    UPDATE datos_app SET cantidad = cantidad + 1 WHERE ID_dato = 2;
+    UPDATE Datos_app SET cantidad = cantidad + 1 WHERE ID_dato = 2;
   `
 } 
 
@@ -454,7 +463,7 @@ function calcularFecha() {
 }  
 
 const generarNuevoUsuario = (idUsuario) => {
-  const query = `INSERT INTO usuarios VALUES (${idUsuario}, '${calcularFecha()}', 0, null);`
+  const query = `INSERT INTO Usuarios VALUES (${idUsuario}, '${calcularFecha()}', 0, null);`
   db.query(query, (err, respuesta) => {
     if (err) {
       console.log('error J al generar usuario generico', err);
