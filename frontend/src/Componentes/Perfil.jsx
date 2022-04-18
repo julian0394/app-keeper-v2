@@ -13,7 +13,7 @@ const axios = require('axios').default;
 
 const Perfil = (props) => {
 
-  const imagenState = props.usuarioActivo.fotoUsuario;
+  const imagenState = props.usuarioActivo.imagenUsuario;
 
   // STATE DONDE SE ALMACENARÁ LA IMAGEN ELEGIDA PARA CAMBIAR
   const [imagenElegida, setImagenElegida] = useState(null);
@@ -63,7 +63,7 @@ const Perfil = (props) => {
 
   const manejoCambioImagen = async (event) => {
     try {
-      const foto = event.target.files[0] /*|| event.dataTransfer.files[0];*/ // En este caso con un solo input, se toma el primer elemento del array
+      const foto = event.target.files[0]  // En este caso con un solo input, se toma el primer elemento del array
 
       if (foto.type.substr(0, 5) === 'image') { // (foto.type === 'image/jpeg' || foto.type === 'image/png') 
         setMalInput(false);
@@ -74,7 +74,7 @@ const Perfil = (props) => {
       }
     } catch (err) {   // Esto ataja la tecla "esc" que cierra la ventana de exploracion de archivos
       setImagenElegida(imagenElegida);
-    } 
+    }
   }
 
   // Si hay foto de perfil borra esa foto a la gris, si hay preview Y foto de perfil debe volver a la foto de perfil  
@@ -87,7 +87,7 @@ const Perfil = (props) => {
     // FALLA CUANDO HAY IMAGEN DE PERFIL Y PREVIEW CARGADA. AL ELIMINAR PREVIEW BORRA FOTO CARGADA
     if (imagenElegida !== null) { /* Aca entra solo cuando se realizan cambios */
       const reader = new FileReader();
-      reader.onloadend = () => { 
+      reader.onloadend = () => {
         setPreview(reader.result);
       }
       reader.readAsDataURL(imagenElegida);
@@ -169,6 +169,7 @@ const Perfil = (props) => {
     }
   }, [] );
  
+  
   return (
     <div className="perfil">
       {/* Solo visible cuando este subiendo foto a la web */}
@@ -229,5 +230,5 @@ const Perfil = (props) => {
     </div>
   );
 }
- 
+
 export default Perfil;

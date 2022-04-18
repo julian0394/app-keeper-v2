@@ -55,7 +55,7 @@ const Header = (props) => {
                 <img 
                   className="foto-usuario no-seleccionable"
                   onClick={manejoBotonPerfil}
-                  src={props.usuarioActivo.fotoUsuario === null ? sinFoto : props.usuarioActivo.fotoUsuario}
+                  src={props.usuarioActivo.imagenUsuario === null ? sinFoto : props.usuarioActivo.imagenUsuario}
                   alt="Foto gris generica" 
                 />
                 <p className="texto-tooltip">Perfil</p>

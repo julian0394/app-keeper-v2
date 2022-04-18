@@ -4,6 +4,7 @@
   margin: 30px auto 20px auto;
   background: $color-fondoBlanco;
   padding: 15px;
+  padding-bottom: 20px;
   border-radius: 7px;
   box-shadow: 0 1px 5px rgb(138, 137, 137);
 
@@ -54,5 +55,22 @@
 
   .btn-agregar {
     font-size:  2rem;
+  }
+
+  .contador-palabras {
+    font-size: .9rem;
+    color: gray;
+    font-weight: bold;
+  }
+
+  .contador-excedido {
+    color: #e71d1d;
+    // font-weight: bold;
+  }
+
+  .btn-anulado{
+    background: lightgray;
+    pointer-events: none;
+    cursor: default;
   }
 }

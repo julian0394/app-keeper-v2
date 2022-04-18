@@ -25,23 +25,4 @@ const notas = [
     }
   ];
 
-  // <header>
-  //       <h1 className="no-seleccionable"> <FontAwesomeIcon className="logo" icon={faLightbulb} /> Keeper </h1>
-  //       {props.ruta === 'notas' && 
-  //           <div className="usuario-header">
-  //             <img className="foto-usuario" onClick={() => console.log('profile')} src={sinFoto} alt="Foto gris generica" />
-  //             {/* <FontAwesomeIcon className="flecha-menu" icon={faCaretDown} onClick={manejoCierreSesion} /> */}
-  //           </div>   
-  //       }
-  //       {menuAbierto &&
-  //         <div className="menu">
-  //           {/* <p className="item">Información</p>
-  //           <p className="item">Ver perfil</p>
-  //           <p className="item">Cerrar sesión</p> */}
-  //           <FontAwesomeIcon className="item" icon={faInfoCircle} onClick={() => console.log('info')} />
-  //           <FontAwesomeIcon className="item" icon={faSignOutAlt} onClick={manejoCierreSesion} />
-  //         </div>
-  //       }
-  //     </header>
-
-  export default notas;
+export default notas;
