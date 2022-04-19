@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import InputFormulario from './InputFormulario';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import path from '../../paths';
 
 const axios = require('axios').default;
 
@@ -28,12 +29,12 @@ const Registro = (props) => {
     try {
       if( props.buscarPropiedadVacia(registro) ) {
 
-        const resultado = await axios.post('http://localhost:3030/register', {
+        const resultado = await axios.post(path + '/register', {
           nombreUsuario: registro.usuario.trim(),
           mailUsuario: registro.email.trim(),
           passUsuario: registro.password.trim(),
         });
-
+console.log(resultado);
         if(resultado.data === 'existente')
           await props.setInputIncorrecto(1); /* Hubo coincidencias con otro usuario */
         else {
@@ -56,7 +57,7 @@ const Registro = (props) => {
   // SUMA 1 A LA CANTIDAD DE USUARIOS REGISTRADOS
   const editarDatoUsuarios = async () => {
     try {
-      await axios.post('http://localhost:3030/datos/editarUsuarios');
+      await axios.post(path + '/datos/editarUsuarios');
       await props.traerDatosGenerales();
 
     } catch (err) {

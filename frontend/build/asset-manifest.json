@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3d4f33de.chunk.css",
+    "main.js": "/static/js/main.9201d21b.chunk.js",
+    "main.js.map": "/static/js/main.9201d21b.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.38f647cd.js",
+    "runtime-main.js.map": "/static/js/runtime-main.38f647cd.js.map",
+    "static/js/2.2117d08c.chunk.js": "/static/js/2.2117d08c.chunk.js",
+    "static/js/2.2117d08c.chunk.js.map": "/static/js/2.2117d08c.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.1264d31eb6c32284bdaab606fb7e8b2b.js": "/precache-manifest.1264d31eb6c32284bdaab606fb7e8b2b.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.3d4f33de.chunk.css.map": "/static/css/main.3d4f33de.chunk.css.map",
+    "static/media/doge-icon.png": "/static/media/doge-icon.5ceac361.png",
+    "static/media/doge-img.png": "/static/media/doge-img.72487465.png",
+    "static/media/icono-error.png": "/static/media/icono-error.999be554.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.38f647cd.js",
+    "static/js/2.2117d08c.chunk.js",
+    "static/css/main.3d4f33de.chunk.css",
+    "static/js/main.9201d21b.chunk.js"
+  ]
+}

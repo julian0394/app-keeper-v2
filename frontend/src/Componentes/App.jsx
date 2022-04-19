@@ -5,7 +5,8 @@ import Ingreso from './ingreso/Ingreso';
 import CuerpoNotas from './Cuerpo/CuerpoNotas';
 import Perfil from './Perfil';
 
-import '../Estilos/App.scss'
+import '../Estilos/App.scss';
+import path from '../paths'; 
 
 const axios = require('axios').default;
 
@@ -27,8 +28,8 @@ const App = () => {
   
   const traerDatosGenerales = async () => {
     try {
-      const datos = await axios.get('http://localhost:3030/datos/traer');
-      setDatosGenerales(datos.data);
+      const datos = await axios.get(path + '/datos/traer');
+      await setDatosGenerales(datos.data);
     } catch (err) {
       console.log('Error J al traer datos generales', err);
     }

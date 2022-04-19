@@ -8,6 +8,7 @@ import { faUpload, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import path from '../paths'; 
 
 const axios = require('axios').default;
 
@@ -124,7 +125,7 @@ const Perfil = (props) => {
   const imagenABase = async (linkImg) => {
     try {
       await axios.post(
-        'http://localhost:3030/usuario/cambiar-foto', 
+        path + '/usuario/cambiar-foto', 
         {
           link: linkImg,
           ID_usuario: props.usuarioActivo.ID_usuario
@@ -138,7 +139,7 @@ const Perfil = (props) => {
   const borrarImg = async () => {
     try {
       await axios.post(
-        'http://localhost:3030/usuario/borrar-foto', { ID_usuario: props.usuarioActivo.ID_usuario }
+        path + '/usuario/borrar-foto', { ID_usuario: props.usuarioActivo.ID_usuario }
       );
     } catch (err) {
       console.log('Error front J al cargar img en DB', err);
@@ -149,7 +150,7 @@ const Perfil = (props) => {
   const reinstanciarUsuario = async () => {
     try {
       const usuarioConFoto = await axios.post(
-        'http://localhost:3030/usuario/buscar', { ID_usuario: props.usuarioActivo.ID_usuario }
+        path + '/usuario/buscar', { ID_usuario: props.usuarioActivo.ID_usuario }
       );
       return usuarioConFoto.data[0];
     } catch (err) {
