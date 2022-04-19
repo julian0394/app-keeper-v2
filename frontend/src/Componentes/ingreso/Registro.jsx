@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import InputFormulario from './InputFormulario';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import path from '../../paths';
 
 const axios = require('axios').default;
 
@@ -28,8 +27,8 @@ const Registro = (props) => {
   const manejoClickRegistro = async () => {
     try {
       if( props.buscarPropiedadVacia(registro) ) {
-
-        const resultado = await axios.post(path + '/register', {
+console.log(process.env.API_PATH + '/register');
+        const resultado = await axios.post(process.env.API_PATH + '/register', {
           nombreUsuario: registro.usuario.trim(),
           mailUsuario: registro.email.trim(),
           passUsuario: registro.password.trim(),
@@ -57,7 +56,7 @@ const Registro = (props) => {
   // SUMA 1 A LA CANTIDAD DE USUARIOS REGISTRADOS
   const editarDatoUsuarios = async () => {
     try {
-      await axios.post(path + '/datos/editarUsuarios');
+      await axios.post(process.env.API_PATH + '/datos/editarUsuarios');
       await props.traerDatosGenerales();
 
     } catch (err) {

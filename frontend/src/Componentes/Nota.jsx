@@ -1,7 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
-import path from '../paths'; 
 
 const axios = require('axios').default;
 
@@ -10,7 +9,7 @@ const Nota = (props) => {
   const manejoBotonBorrar = async () => {
     try {
       const idBorrar = await props.id;
-      await axios.post(path + '/notas/borrar', {ID_nota: idBorrar});
+      await axios.post(process.env.API_PATH + '/notas/borrar', {ID_nota: idBorrar});
       await props.editarDatoNota('resta');
       
       await props.buscarNotasEnDB();

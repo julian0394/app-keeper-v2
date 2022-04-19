@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import AreaNuevaNota from './AreaNuevaNota';
 import AreaNotas from './AreaNotas';
 import Modal from '../Modal';
-import path from '../../paths'; 
 
 const axios = require('axios').default;
 
@@ -21,7 +20,7 @@ const CuerpoNotas = (props) => {
   const buscarNotasEnDB = async () => {
     const idUsuario = await props.usuarioActivo.ID_usuario;
     try {  
-      const resultado = await axios.post(path + '/notas/mostrar', { 
+      const resultado = await axios.post(process.env.API_PATH + '/notas/mostrar', { 
         ID_usuario: idUsuario
       });
       await props.setListaNotas(resultado.data)
@@ -40,7 +39,7 @@ const CuerpoNotas = (props) => {
       op = '- 1';
     
     try {
-      await axios.post(path +  '/datos/editarNotas', {operacion: op});
+      await axios.post(process.env.API_PATH +  '/datos/editarNotas', {operacion: op});
       await props.traerDatosGenerales();
 
     } catch (err) {

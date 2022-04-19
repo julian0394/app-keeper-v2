@@ -4,8 +4,12 @@ import Nota from '../Nota';
 const AreaNotas = (props) => {
     
   useEffect( () => {
-    props.buscarNotasEnDB();
+    traerNotas();
   }, []);
+
+  const traerNotas = async () => {
+    await props.buscarNotasEnDB();
+  }
 
   return ( 
     <>

@@ -3,7 +3,6 @@ import InputFormulario from './InputFormulario';
 import './icono-error.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import path from '../../paths'; 
 
 const axios = require('axios').default;
 
@@ -28,7 +27,7 @@ const Login = (props) => {
 
   const manejoClickLogin = async () => {
     try {
-      const resultado = await axios.post(path + '/login', { 
+      const resultado = await axios.post(process.env.API_PATH + '/login', { 
         nombreUsuario: login.usuario.trim(),
         passUsuario: login.password.trim()
       });

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
-import path from '../paths'; 
 
 const axios = require('axios').default;
 
@@ -32,7 +31,7 @@ const Modal = (props) => {
         cuerpoNota: input.contenido,
         ID_nota: props.notaParaEditar.ID_nota,
       }
-      await axios.post(path + '/notas/editar', notaEditada);
+      await axios.post(process.env.API_PATH + '/notas/editar', notaEditada);
 
       await props.buscarNotasEnDB();
       await props.toggleModoEdicion();

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import path from '../../paths'; 
 
 const axios = require('axios').default;
 
@@ -44,7 +43,7 @@ const AreaNuevaNota = (props) => {
         cuerpoNota: input.contenido,
         ID_usuario: props.usuarioActivo.ID_usuario
       }
-      await axios.post(path + '/notas/nueva', nuevaNota);
+      await axios.post(process.env.API_PATH + '/notas/nueva', nuevaNota);
 
       await props.buscarNotasEnDB();
 
