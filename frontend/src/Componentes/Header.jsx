@@ -46,7 +46,7 @@ const Header = (props) => {
           {/* <h1 className="no-seleccionable"> <FontAwesomeIcon className="logo" icon={faLightbulb} /> Doge Notes </h1> */}
           <div className="zona-titulo">
             <img className="logoo" src={dogeIcon} alt="Doge" onClick={menejoEasterEgg} title="Y esto..? Easter egg?!" />
-            <h1 className="no-seleccionable">Doge Notes</h1>
+            <h1 className="no-seleccionable">Doge Notes!</h1>
           </div>
           { (props.ruta === 'notas' || props.ruta === 'perfil') && 
             <div className="usuario-header menu">

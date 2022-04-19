@@ -34,7 +34,7 @@ const Registro = (props) => {
           mailUsuario: registro.email.trim(),
           passUsuario: registro.password.trim(),
         });
-console.log(resultado);
+
         if(resultado.data === 'existente')
           await props.setInputIncorrecto(1); /* Hubo coincidencias con otro usuario */
         else {
